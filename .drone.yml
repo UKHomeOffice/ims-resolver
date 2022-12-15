@@ -21,7 +21,7 @@ steps:
       branch: master
       event: [push, pull_request]
       
-  # - name: linting
+  ## - name: linting
   #   pull: if-not-exists
   #   image: node:14
   #   commands:
