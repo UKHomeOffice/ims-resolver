@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "description": "HOF IMS resolver",
   "main": "index.js",
+  "engines": {
+    "node": "^18.12.1"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon -r dotenv/config index.js"
   },
   "repository": {
     "type": "git",
@@ -18,5 +23,9 @@
   "homepage": "https://github.com/UKHomeOffice/ims-resolver#readme",
   "dependencies": {
     "strong-soap": "^3.4.1"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.3",
+    "nodemon": "^2.0.20"
   }
 }

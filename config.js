@@ -3,10 +3,10 @@ module.exports = {
     env: process.env.NODE_ENV,
     ims: {
       wsdl: process.env.WSDL,
-      createCase: 'createCase',
-      retrieveCaseDetails: 'retrieveCaseDetails',
+      createCaseApi: 'createCase',
+      getCaseApi: 'retrieveCaseDetails',
       apiUser: process.env.IMS_API_USER,
       apiPassword: process.env.IMS_API_PASSWORD,
-      ClassificationEventCode: 4000041
+      PublicAllegationsEventCode: 4000041
     }
   };
