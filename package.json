@@ -1,0 +1,22 @@
+{
+  "name": "ims-resolver",
+  "version": "1.0.0",
+  "description": "HOF IMS resolver",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UKHomeOffice/ims-resolver.git"
+  },
+  "author": "Sulthan Ahmed, Mohamed Shamil Uwais, Rhodine Orleans-Lindsay & SAS HOF Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/UKHomeOffice/ims-resolver/issues"
+  },
+  "homepage": "https://github.com/UKHomeOffice/ims-resolver#readme",
+  "dependencies": {
+    "strong-soap": "^3.4.1"
+  }
+}

@@ -1,0 +1,10 @@
+node_modules/
+public
+apps/**/translations/*
+!apps/**/translations/src
+coverage
+package-lock.json
+.env
+output/
+.DS_Store
+dump.rdb
