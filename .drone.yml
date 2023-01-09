@@ -69,7 +69,7 @@ steps:
   #     branch:
   #       include:
   #         - master
-  #     event: pull_request
+  #     event: pull_request 
 
   - name: cron_build_image
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
