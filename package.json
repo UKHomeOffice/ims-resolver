@@ -1,0 +1,37 @@
+{
+    "name": "ims-resolver",
+    "version": "4.1.0",
+    "description": "",
+    "main": "index.js",
+    "engines": {
+      "node": "^14.15.0"
+    },
+    "scripts": {
+      "start": "node index.js",
+      "dev": "nodemon -r dotenv/config index.js",
+      "debug": "node -r dotenv/config --inspect index.js",
+      "test": "yarn test:lint && yarn test:snyk",
+      "test:lint": "eslint . --config ./node_modules/eslint-config-hof/default.js",
+      "test:snyk": "snyk config set api=SNYK_TOKEN && snyk test"
+    },
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+      "aws-sdk": "^2.1031.0",
+      "hof": "^19.11.24",
+      "knex": "^0.95.11",
+      "pg": "^8.7.1",
+      "sqs-consumer": "^5.4.0",
+      "winston": "^3.2.1"
+    },
+    "devDependencies": {
+      "eslint": "^7.32.0",
+      "eslint-config-hof": "^1.2.1",
+      "nodemon": "^2.0.14",
+      "snyk": "^1.722.0"
+    },
+    "resolutions": {
+      "underscore": "^1.12.1"
+    }
+  }
+  
