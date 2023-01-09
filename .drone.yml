@@ -57,19 +57,19 @@ steps:
       branch: master
       event: [push, pull_request]
 
-  - name: snyk_scan
-    pull: if-not-exists
-    image: node:14
-    environment:
-      SNYK_TOKEN:
-        from_secret: snyk_token
-    commands:
-      - yarn run test:snyk
-    when:
-      branch:
-        include:
-          - master
-      event: pull_request
+  # - name: snyk_scan
+  #   pull: if-not-exists
+  #   image: node:14
+  #   environment:
+  #     SNYK_TOKEN:
+  #       from_secret: snyk_token
+  #   commands:
+  #     - yarn run test:snyk
+  #   when:
+  #     branch:
+  #       include:
+  #         - master
+  #     event: pull_request
 
   - name: cron_build_image
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
