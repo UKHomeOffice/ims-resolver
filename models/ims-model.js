@@ -16,6 +16,7 @@ module.exports = {
     const auth = `Basic:${Buffer.from(`${config.ims.apiUser}:${config.ims.apiPassword}`).toString('base64')}`;
     soap.createClient(wsdlUrl, { wsdl_headers: { Authorization: auth } }, async function(err, client) {
       client.setSecurity(new soap.BasicAuthSecurity(config.ims.apiUser, config.ims.apiPassword));
+      client.setEndpoint(config.ims.endpoint);
       var method = client[config.ims.createCaseApi];
       const {result, envelope, soapHeader} = await client.createCase(caseType);
       console.log('Response Envelope: \n' + envelope);
