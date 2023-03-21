@@ -1558,7 +1558,7 @@ let eformData = {
 
 let document = {
   FWTDocument : {
-    Document : 'VGhpcyBpcyBhIHRlc3Q',
+    Document : '1101000 1100101 1101100 1101100 1101111',
     DocumentType : 1,
     DocumentName : 'test.txt'
   }
@@ -1611,27 +1611,28 @@ const createCase = (client, caseType) =>
       return resolve(result);
     }
   )
-  );
+);
 
-  /************************************************************
-   * @param {Object} eForm Case eForm to add
-   * @param {Object} eForm.FWTCaseEformNew
-   * @param {Object} eForm.FWTCaseEformNew.CaseReference
-   * @param {String} eForm.FWTCaseEformNew.EformName
-   ************************************************************/
-   const addCaseForm = (client, caseRef) =>
-      new Promise(function(resolve, reject){
-        eForm.FWTCaseEformNew.CaseReference =
-        eForm.FLCaseEformInstance.CaseReference = caseRef;
-        client.addCaseEform(eForm,
-          (err, result) => {
-            if (err)
-              return reject(err);
+/************************************************************
+ * @param {Object} eForm Case eForm to add
+ * @param {Object} eForm.FWTCaseEformNew
+ * @param {Object} eForm.FWTCaseEformNew.CaseReference
+ * @param {String} eForm.FWTCaseEformNew.EformName
+ ************************************************************/
+  const addCaseForm = (client, caseRef) =>
+    new Promise(function(resolve, reject){
+      eForm.FWTCaseEformNew.CaseReference =
+      eForm.FLCaseEformInstance.CaseReference = caseRef;
+      client.addCaseEform(eForm,
+        (err, result) => {
+          if (err)
+            return reject(err);
 
-            return resolve(result);
-          }
-        )
-      });
+          return resolve(result);
+        }
+      )
+    });
+
   /************************************************************
    * @param {Object} eformData Case eForm data
    * @param {Object} eformData.FLEformFields
@@ -1687,11 +1688,5 @@ module.exports = {
 
     result = await writeFormData(client, caseRef);
     console.log('writeFormData result: ' + JSON.stringify(result, null, 2));
-
-    result = await addDocument(client, document);
-    console.log('addDocument result: ' + JSON.stringify(result, null, 2));
-
-   // result = await createNotes(client, notes);
-    //console.log('createNotes result: ' + JSON.stringify(result, null, 2));
   }
 }

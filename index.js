@@ -3,6 +3,9 @@
 const soap = require('strong-soap').soap;
 const config = require('./config');
 const { createPublicAllegationsCase } = require('./models/ims-model');
+const express = require('express')
+const app = express()
+const port = config.port;
 
 const caseType = {
   FWTCaseCreate : {
@@ -11,3 +14,11 @@ const caseType = {
 };
 
 createPublicAllegationsCase(caseType);
+
+app.get('/', (req, res) => {
+  res.send('running ims resolver!')
+})
+
+app.listen(port, () => {
+  console.log(`ims resolver listening on port ${port}`)
+})
