@@ -234,7 +234,7 @@ let eformData = {
         },
         {
           "FieldName": "caseid",
-          "FieldValue": "101000970485"
+          "FieldValue": ""
         },
         {
           "FieldName": "txpervechelse",
@@ -354,7 +354,7 @@ let eformData = {
         },
         {
           "FieldName": "casenum_1",
-          "FieldValue": "101000970485"
+          "FieldValue": ""
         },
         {
           "FieldName": "peruklocwebsite",
@@ -410,7 +410,7 @@ let eformData = {
         },
         {
           "FieldName": "caseref",
-          "FieldValue": "101000970485"
+          "FieldValue": ""
         },
         {
           "FieldName": "rdwhocompanother",
@@ -1034,7 +1034,7 @@ let eformData = {
         },
         {
           "FieldName": "casenum",
-          "FieldValue": "101000970485"
+          "FieldValue": ""
         },
         {
           "FieldName": "txtimearraero",
@@ -1619,18 +1619,19 @@ const createCase = (client, caseType) =>
    * @param {Object} eForm.FWTCaseEformNew.CaseReference
    * @param {String} eForm.FWTCaseEformNew.EformName
    ************************************************************/
-   const addCaseForm = (client, eForm) =>
-   new Promise((resolve, reject) =>
-     client.addCaseEform(eForm,
-       (err, result) => {
-         if (err)
-          return reject(err);
+   const addCaseForm = (client, caseRef) =>
+      new Promise(function(resolve, reject){
+        eForm.FWTCaseEformNew.CaseReference =
+        eForm.FLCaseEformInstance.CaseReference = caseRef;
+        client.addCaseEform(eForm,
+          (err, result) => {
+            if (err)
+              return reject(err);
 
-         return resolve(result);
-       }
-     )
-   );
-
+            return resolve(result);
+          }
+        )
+      });
   /************************************************************
    * @param {Object} eformData Case eForm data
    * @param {Object} eformData.FLEformFields
@@ -1639,12 +1640,21 @@ const createCase = (client, caseType) =>
    * @param {String} eformData.FLEformFields.CaseEformInstance.EformName
    * @param {String} eformData.FLEformFields.EformData
    ************************************************************/
-  const writeFormData = (client, eformData) =>
-    new Promise((resolve, reject) =>
+  const writeFormData = (client, caseRef) =>
+    new Promise(function(resolve, reject) {
+      let ids = {};
+      eformData.FLEformFields.EformData.EformFields.map((item, index) => {ids[item.FieldName] = index})
+      eformData.FLEformFields.CaseEformInstance.CaseReference =
+      eformData.FLEformFields.EformData.EformFields[ids["casenum"]].FieldValue =
+      eformData.FLEformFields.EformData.EformFields[ids["casenum_1"]].FieldValue =
+      eformData.FLEformFields.EformData.EformFields[ids["caseid"]].FieldValue =
+      eformData.FLEformFields.EformData.EformFields[ids["caseref"]].FieldValue = caseRef;
+
       client.writeCaseEformData(eformData,
         (err, result) => (err ? reject(err) : resolve(result))
       )
-  );
+    });
+
 
   const addDocument = (client, document) =>
     new Promise((resolve, reject) =>
@@ -1667,20 +1677,15 @@ module.exports = {
    * @param {String} caseType.FWTCaseCreate.ClassificationEventCode
    ************************************************************/
   createPublicAllegationsCase: async (caseType) => {
+
     const client = await createClient();
 
-    eForm.FWTCaseEformNew.CaseReference =
-    eForm.FLCaseEformInstance.CaseReference =
-    eformData.FLEformFields.CaseEformInstance.CaseReference =
-   // eformData.FLEformFields.EformData.EformFields['casenum'] =
-  //  eformData.FLEformFields.EformData.EformFields['casenum_1'] =
-   // eformData.FLEformFields.EformData.EformFields['caseid'] =
-    await createCase(client, caseType);
+    const caseRef = await createCase(client, caseType);
 
-    let result = await addCaseForm(client, eForm);
+    let result = await addCaseForm(client, caseRef);
     console.log('addCaseForm result: ' + JSON.stringify(result, null, 2));
 
-    result = await writeFormData(client, eformData);
+    result = await writeFormData(client, caseRef);
     console.log('writeFormData result: ' + JSON.stringify(result, null, 2));
 
     result = await addDocument(client, document);
