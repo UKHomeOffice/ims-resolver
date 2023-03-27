@@ -1611,27 +1611,28 @@ const createCase = (client, caseType) =>
       return resolve(result);
     }
   )
-  );
+);
 
-  /************************************************************
-   * @param {Object} eForm Case eForm to add
-   * @param {Object} eForm.FWTCaseEformNew
-   * @param {Object} eForm.FWTCaseEformNew.CaseReference
-   * @param {String} eForm.FWTCaseEformNew.EformName
-   ************************************************************/
-   const addCaseForm = (client, caseRef) =>
-      new Promise(function(resolve, reject){
-        eForm.FWTCaseEformNew.CaseReference =
-        eForm.FLCaseEformInstance.CaseReference = caseRef;
-        client.addCaseEform(eForm,
-          (err, result) => {
-            if (err)
-              return reject(err);
+/************************************************************
+ * @param {Object} eForm Case eForm to add
+ * @param {Object} eForm.FWTCaseEformNew
+ * @param {Object} eForm.FWTCaseEformNew.CaseReference
+ * @param {String} eForm.FWTCaseEformNew.EformName
+ ************************************************************/
+  const addCaseForm = (client, caseRef) =>
+    new Promise(function(resolve, reject){
+      eForm.FWTCaseEformNew.CaseReference =
+      eForm.FLCaseEformInstance.CaseReference = caseRef;
+      client.addCaseEform(eForm,
+        (err, result) => {
+          if (err)
+            return reject(err);
 
-            return resolve(result);
-          }
-        )
-      });
+          return resolve(result);
+        }
+      )
+    });
+
   /************************************************************
    * @param {Object} eformData Case eForm data
    * @param {Object} eformData.FLEformFields
