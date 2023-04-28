@@ -1558,7 +1558,7 @@ let eformData = {
 
 let document = {
   FWTDocument : {
-    Document : 'VGhpcyBpcyBhIHRlc3Q',
+    Document : '1101000 1100101 1101100 1101100 1101111',
     DocumentType : 1,
     DocumentName : 'test.txt'
   }
