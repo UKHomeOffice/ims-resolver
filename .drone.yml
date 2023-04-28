@@ -14,13 +14,13 @@ trigger:
 steps:
   - name: setup
     pull: if-not-exists
-    image: node:14
+    image: node:18
     commands:
       - yarn install --frozen-lockfile
     when:
       branch: master
       event: [push, pull_request]
-      
+
   # - name: linting
   #   pull: if-not-exists
   #   image: node:14
@@ -59,7 +59,7 @@ steps:
 
   - name: snyk_scan
     pull: if-not-exists
-    image: node:14
+    image: node:18
     environment:
       SNYK_TOKEN:
         from_secret: snyk_token
@@ -93,7 +93,7 @@ steps:
   #     - yarn run test:snyk
   #   when:
   #     cron: security_scans
-  #     event: cron 
+  #     event: cron
 
   # Slack notification upon a CRON job fail
   - name: cron_notify_slack_tear_down_pr_envs
