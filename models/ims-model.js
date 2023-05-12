@@ -1556,11 +1556,12 @@ let eformData = {
   }
 };
 
+// this base64 encoded file
 let document = {
   FWTDocument : {
-    Document : 'VGhpcyBpcyBhIHRlc3Q',
+    Document : 'eW8geW8geW9vb28K',
     DocumentType : 1,
-    DocumentName : 'test.txt'
+    DocumentName : 'sulthan-test.txt'
   }
 };
 
@@ -1569,13 +1570,13 @@ let notes = {
     ParentId : null,
     ParentType : 0,
     NoteDetails : {
-      Text: null,
+      // Text: null,
         NoteLabels : {
           NoteLabel : 'test note label'
         },
        NoteAttachments : {
          NoteAttachmentList : {
-          AttachmentName : 'test.txt',
+          AttachmentName : 'sulthan-test.txt',
           AttachmentIdentifier : null,
           AttachmentType: 0
          }
@@ -1620,7 +1621,7 @@ const createCase = (client, caseType) =>
  * @param {String} eForm.FWTCaseEformNew.EformName
  ************************************************************/
   const addCaseForm = (client, caseRef) =>
-    new Promise(function(resolve, reject){
+    new Promise((resolve, reject) => {
       eForm.FWTCaseEformNew.CaseReference =
       eForm.FLCaseEformInstance.CaseReference = caseRef;
       client.addCaseEform(eForm,
@@ -1656,20 +1657,28 @@ const createCase = (client, caseType) =>
       )
     });
 
-
+  /***************************************************************************
+   * @param {Object} document (base64 encoded) document, documentType, documentName
+   ***************************************************************************/
   const addDocument = (client, document) =>
-    new Promise((resolve, reject) =>
+    new Promise((resolve, reject) => 
       client.addDocumentToRepository(document,
         (err, result) => (err ? reject(err) : resolve(result))
       )
   );
 
-  const createNotes = (client, notes) =>
-    new Promise((resolve, reject) =>
-      client.createNotes(document,
+  /***************************************************************************
+   * @param {Object} note parentID (refers to casenumber), attachmentName, attachmentIdentifier, attachmentType
+   ***************************************************************************/
+  const createNotes = (client, documentID) =>
+    new Promise((resolve, reject) => {
+      notes.FWTNoteToParentRef.ParentId = eForm.FWTCaseEformNew.CaseReference;
+      notes.AttachmentIdentifier = documentID;
+      console.log('notes----------->', JSON.stringify(notes, null, 2));
+      client.createNotes(notes,
         (err, result) => (err ? reject(err) : resolve(result))
       )
-  );
+    });
 
 module.exports = {
   /** **********************************************************
@@ -1689,10 +1698,11 @@ module.exports = {
     result = await writeFormData(client, caseRef);
     console.log('writeFormData result: ' + JSON.stringify(result, null, 2));
 
-    result = await addDocument(client, document);
+    const documentID = await addDocument(client, document);
     console.log('addDocument result: ' + JSON.stringify(result, null, 2));
 
-   // result = await createNotes(client, notes);
-    //console.log('createNotes result: ' + JSON.stringify(result, null, 2));
+    const attachment = await createNotes(client, documentID);
+    console.log('attachment result: ' + JSON.stringify(attachment, null, 2));
+
   }
 }
