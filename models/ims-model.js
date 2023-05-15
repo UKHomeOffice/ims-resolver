@@ -1679,18 +1679,18 @@ module.exports = {
    ************************************************************/
   createPublicAllegationsCase: async (caseType) => {
 
-    const client = await createClient();
+    // const client = await createClient();
 
-    const caseRef = await createCase(client, caseType);
+    // const caseRef = await createCase(client, caseType);
 
-    let result = await addCaseForm(client, caseRef);
-    console.log('addCaseForm result: ' + JSON.stringify(result, null, 2));
+    // let result = await addCaseForm(client, caseRef);
+    // console.log('addCaseForm result: ' + JSON.stringify(result, null, 2));
 
-    result = await writeFormData(client, caseRef);
-    console.log('writeFormData result: ' + JSON.stringify(result, null, 2));
+    // result = await writeFormData(client, caseRef);
+    // console.log('writeFormData result: ' + JSON.stringify(result, null, 2));
 
-    result = await addDocument(client, document);
-    console.log('addDocument result: ' + JSON.stringify(result, null, 2));
+    // result = await addDocument(client, document);
+    // console.log('addDocument result: ' + JSON.stringify(result, null, 2));
 
    // result = await createNotes(client, notes);
     //console.log('createNotes result: ' + JSON.stringify(result, null, 2));
