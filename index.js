@@ -13,7 +13,7 @@ const caseType = {
   }
 };
 
-// createPublicAllegationsCase(caseType);
+createPublicAllegationsCase(caseType);
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
