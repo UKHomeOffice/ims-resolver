@@ -16,9 +16,9 @@ const caseType = {
 createPublicAllegationsCase(caseType);
 
 app.get('/', (req, res) => {
-  res.send('Running ims resolver!')
+  res.send('running ims resolver!')
 })
 
 app.listen(port, () => {
-  console.log(`Ims resolver listening on port ${port}`)
+  console.log(`ims resolver listening on port ${port}`)
 })

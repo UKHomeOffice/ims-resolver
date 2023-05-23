@@ -1688,11 +1688,5 @@ module.exports = {
 
     result = await writeFormData(client, caseRef);
     console.log('writeFormData result: ' + JSON.stringify(result, null, 2));
-
-    // result = await addDocument(client, document);
-    // console.log('addDocument result: ' + JSON.stringify(result, null, 2));
-
-    // result = await createNotes(client, notes);
-    // console.log('createNotes result: ' + JSON.stringify(result, null, 2));
   }
 }
