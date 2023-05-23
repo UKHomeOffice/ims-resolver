@@ -19,4 +19,4 @@ COPY --chown=999:998 . /app
 
 RUN yarn install --frozen-lockfile --production --ignore-optional --ignore-scripts
 
-CMD NODE_TLS_REJECT_UNAUTHORIZED=0 node index.js
+CMD node index.js
