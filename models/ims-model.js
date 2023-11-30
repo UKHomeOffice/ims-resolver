@@ -129,6 +129,7 @@ const addCaseForm = async (client, caseRef, eformDefinition, eformName) =>
     );
   });
 
+
 const writeFormData = async (client, caseRef, eform, msg) =>
   new Promise(function (resolve, reject) {
     eformData.FLEformFields.CaseEformInstance.EformName = eform;
@@ -139,6 +140,12 @@ const writeFormData = async (client, caseRef, eform, msg) =>
       (err, result) => (err ? reject(err) : resolve(result))
     );
   });
+
+  const addAdditionalPerson = async (client, caseRef, eform, msg)=>
+    new Promise(function(resolve, reject) {
+
+  });
+
 
 // const addDocument = (client, document) =>
 //   new Promise((resolve, reject) =>

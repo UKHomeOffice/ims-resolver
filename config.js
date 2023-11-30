@@ -17,8 +17,10 @@ module.exports = {
       endpoint: new AWS.Endpoint('http://localhost:4566'),
       region: process.env.AWS_REGION,
       queueUrl: process.env.SQS_URL,
-      accessKeyId: process.env.ACCESS_KEY_ID,
-      secretAccessKey: process.env.SECRET_ACCESS_KEY
+      credentials: {
+        accessKeyId: process.env.ACCESS_KEY_ID,
+        secretAccessKey: process.env.SECRET_ACCESS_KEY
+      }
     }
   }
 };
