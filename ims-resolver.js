@@ -10,12 +10,11 @@ const imsResolver = {
     const consumer = Consumer.create({
       queueUrl: config.aws.sqs.queueUrl,
       sqs: new SQSClient({
-       // endpoint: new AWS.Endpoint('http://localhost:4566'),
         region: config.aws.sqs.region,
-
-        accessKeyId: config.aws.sqs.accessKeyId,
-        secretAccessKey: config.aws.sqs.secretAccessKey
-
+        credentials: {
+          accessKeyId: config.aws.sqs.accessKeyId,
+          secretAccessKey: config.aws.sqs.secretAccessKey
+        }
       }),
       attributeNames: ['All', 'ApproximateFirstReceiveTimestamp', 'ApproximateReceiveCount'],
       handleMessage: imsResolver.handleMessage
