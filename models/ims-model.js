@@ -132,7 +132,7 @@ const addCaseForm = async (client, caseRef, eformDefinition, eformName) =>
 
 const writeFormData = async (client, caseRef, eform, msg) =>
   new Promise(function (resolve, reject) {
-    eformData.FLEformFields.CaseEformInstance.EformName = eform;
+    eformData.FLEformFields.CaseEformInstance.EformName = eform.EformFields;
     eformData.FLEformFields.EformData = msg;
     eformData.FLEformFields.CaseEformInstance.CaseReference = caseRef;
     setEformValues(eformData.FLEformFields.EformData, caseRef);
