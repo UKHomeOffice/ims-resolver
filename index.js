@@ -1,24 +1,5 @@
-"use strict";
+'use strict';
+const imsResolver = require('./ims-resolver');
+/* eslint-disable consistent-return, no-console */
 
-const soap = require('strong-soap').soap;
-const config = require('./config');
-const { createPublicAllegationsCase } = require('./models/ims-model');
-const express = require('express')
-const app = express()
-const port = config.port;
-
-const caseType = {
-  FWTCaseCreate : {
-    ClassificationEventCode: config.ims.PublicAllegationsEventCode
-  }
-};
-
-createPublicAllegationsCase(caseType);
-
-app.get('/', (req, res) => {
-  res.send('running ims resolver!')
-})
-
-app.listen(port, () => {
-  console.log(`ims resolver listening on port ${port}`)
-})
+imsResolver.start();
