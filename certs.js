@@ -7,7 +7,7 @@ const options = {
     ca: fs.readFileSync("/etc/ssl/certs/ims-prp1-ca.crt")
     };
 
-const getCertificate = function getRequest(){
+function getRequest(){
     https.get('https://ho-it-prp1-i-ie-ims.report-and-manage-intelligence.np.immigrationservices.phz/lagan/services/FL', options, (res) => {
     // Handle the response
     console.log(res)
@@ -15,7 +15,7 @@ const getCertificate = function getRequest(){
 }
 
 module.exports = {
-    getCertificate
+    getRequest
 };
 
 
