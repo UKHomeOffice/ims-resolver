@@ -29,9 +29,22 @@ const eformData = {
       CaseReference: null,
       EformName: config.ims.eformName
     },
-    EformData: null
+    EformData: {
+      EformFields : null
+    }
   }
 };
+
+const extensionObject = {
+  FLExtensionObjectCreate: {
+    ObjectID: -1,
+    BriefDetails: {
+      ObjectType: 20,
+      ObjectReference: -1
+    },
+    Value: []
+  }
+}
 
 // const document = {
 //   FWTDocument: {
@@ -117,7 +130,7 @@ const createCase = async client =>
 const addCaseForm = async (client, caseRef, eformDefinition, eformName) =>
   new Promise(function (resolve, reject) {
     eForm.FWTCaseEformNew.CaseReference =
-      eForm.FLCaseEformInstance.CaseReference = caseRef;
+    eForm.FLCaseEformInstance.CaseReference = caseRef;
     eForm.FWTCaseEformNew.EformName = eformDefinition;
     eForm.FLCaseEformInstance.EformName = eformName;
     client.addCaseEform(eForm,
@@ -133,19 +146,26 @@ const addCaseForm = async (client, caseRef, eformDefinition, eformName) =>
 const writeFormData = async (client, caseRef, eform, msg) =>
   new Promise(function (resolve, reject) {
     console.log('eform: ', eform);
-    console.log('eform: ', eform.EformFields);
-    eformData.FLEformFields.CaseEformInstance.EformName = eform.EformFields;
-    eformData.FLEformFields.EformData = msg;
+    eformData.FLEformFields.CaseEformInstance.EformName = eform;
+    eformData.FLEformFields.EformData.EformFields = msg.EformFields;
     eformData.FLEformFields.CaseEformInstance.CaseReference = caseRef;
     setEformValues(eformData.FLEformFields.EformData, caseRef);
+    console.log('eformData: ', eformData);
     client.writeCaseEformData(eformData,
       (err, result) => (err ? reject(err) : resolve(result))
     );
   });
 
-  const addAdditionalPerson = async (client, caseRef, eform, msg)=>
+  const addAdditionalPerson = async (client, caseRef, msg)=>
     new Promise(function(resolve, reject) {
+      extensionObject.FLExtensionObjectCreate.Value.push({Key: 'CASEID', StringValue: caseRef});
+      extensionObject.FLExtensionObjectCreate.Value.push({Key: 'INITIALFORM', StringValue: 'Y'});
+      extensionObject.FLExtensionObjectCreate.Value.push({Key: 'FIRSTNAME', StringValue: 'Yankee'});
+      extensionObject.FLExtensionObjectCreate.Value.push({Key: 'SURNAME', StringValue: 'JACKSON'});
 
+      client.createExtensionObject(extensionObject,
+        (err, result) => (err ? reject(err) : resolve(result))
+      );
   });
 
 
@@ -167,6 +187,9 @@ module.exports = {
   createPublicAllegationsCase: async msg => {
     let result = 0;
 
+    //result = addAdditionalPerson(client, caseRef, msg);
+   // console.log('writeFormData ' +  eforms[i] + ' result: ' + JSON.stringify(result, null, 2));
+
     const client = await createClient();
 
     const caseRef = await createCase(client);
@@ -180,6 +203,9 @@ module.exports = {
 
       result = await writeFormData(client, caseRef, eforms[i], msg);
       console.log('writeFormData ' +  eforms[i] + ' result: ' + JSON.stringify(result, null, 2));
+
+   //   result = addAdditionalPerson(client, caseRef, msg);
+   //   console.log('addAdditionalPerson result: ' + JSON.stringify(result, null, 2));
     }
 
     // result = await addDocument(client, document);
