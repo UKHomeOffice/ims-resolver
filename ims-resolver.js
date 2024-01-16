@@ -9,7 +9,7 @@ const certificate = require('./certs');
 
 const imsResolver = {
   start: function (){
-    certificate()
+    certificate.getRequest()
     const consumer = Consumer.create({
       queueUrl: config.aws.sqs.queueUrl,
       sqs: new SQSClient({

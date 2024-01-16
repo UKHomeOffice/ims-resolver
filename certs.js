@@ -7,17 +7,14 @@ const options = {
     ca: fs.readFileSync("/etc/ssl/certs/ims-prp1-ca.crt")
     };
 
-function getRequest(){
+    
+
+    module.exports = function getRequest(){
     https.get('https://ho-it-prp1-i-ie-ims.report-and-manage-intelligence.np.immigrationservices.phz/lagan/services/FL', options, (res) => {
     // Handle the response
     console.log(res)
     });
-}
 
-module.exports = {
-    getRequest
 };
-
-
 // certificate.getCertificate();
 // certificate.options.ca;
