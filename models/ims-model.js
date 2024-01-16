@@ -34,14 +34,6 @@ const eformData = {
   }
 };
 
-// const document = {
-//   FWTDocument: {
-//     Document: 'VGhpcyBpcyBhIHRlc3Q',
-//     DocumentType: 1,
-//     DocumentName: 'test.txt'
-//   }
-// };
-
 // const notes = {
 //   FWTNoteToParentRef: {
 //     ParentId: null,
@@ -208,6 +200,7 @@ module.exports = {
     let result = 0;
 
     const client = await createClient();
+
     const caseRef = await createCase(client);
 
     const eformDefinitions = config.ims.eformDefinitions.split(', ');
