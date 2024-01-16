@@ -2,7 +2,6 @@ const { Consumer } = require('sqs-consumer');
 const { createPublicAllegationsCase } = require('./models/ims-model');
 const config = require('./config');
 const { SQSClient } = require('@aws-sdk/client-sqs');
-// const AWS = require('aws-sdk');
 /* eslint-disable consistent-return, no-console */
 
 const imsResolver = {

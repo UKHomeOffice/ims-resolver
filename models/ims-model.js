@@ -207,20 +207,19 @@ module.exports = {
   createPublicAllegationsCase: async msg => {
     let result = 0;
 
-    // const client = await createClient();
-    const client = null;
-    // const caseRef = await createCase(client);
+    const client = await createClient();
+    const caseRef = await createCase(client);
 
     const eformDefinitions = config.ims.eformDefinitions.split(', ');
     const eforms = config.ims.eforms.split(', ');
 
-    // for (let i = 0; i < eformDefinitions.length; i++) {
-    //   result = await addCaseForm(client, caseRef, eformDefinitions[i], eforms[0]);
-    //   console.log('addCaseForm ' + eformDefinitions[i] + ' result: ' + JSON.stringify(result, null, 2));
+    for (let i = 0; i < eformDefinitions.length; i++) {
+      result = await addCaseForm(client, caseRef, eformDefinitions[i], eforms[0]);
+      console.log('addCaseForm ' + eformDefinitions[i] + ' result: ' + JSON.stringify(result, null, 2));
 
-    //   result = await writeFormData(client, caseRef, eforms[0], msg);
-    //   console.log('writeFormData ' +  eforms[i] + ' result: ' + JSON.stringify(result, null, 2));
-    // }
+      result = await writeFormData(client, caseRef, eforms[0], msg);
+      console.log('writeFormData ' +  eforms[i] + ' result: ' + JSON.stringify(result, null, 2));
+    }
 
     /*
     TODO
