@@ -207,10 +207,10 @@ module.exports = {
     const eforms = config.ims.eforms.split(', ');
 
     for (let i = 0; i < eformDefinitions.length; i++) {
-      result = await addCaseForm(client, caseRef, eformDefinitions[i], eforms[0]);
+      result = await addCaseForm(client, caseRef, eformDefinitions[i], eforms[i]);
       console.log('addCaseForm ' + eformDefinitions[i] + ' result: ' + JSON.stringify(result, null, 2));
 
-      result = await writeFormData(client, caseRef, eforms[0], msg);
+      result = await writeFormData(client, caseRef, eforms[i], msg);
       console.log('writeFormData ' +  eforms[i] + ' result: ' + JSON.stringify(result, null, 2));
     }
 
