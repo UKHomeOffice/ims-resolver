@@ -3,13 +3,14 @@ const { createPublicAllegationsCase } = require('./models/ims-model');
 const config = require('./config');
 const { SQSClient } = require('@aws-sdk/client-sqs');
 const AWS = require('aws-sdk');
-const certificate = require('./certs');
+const getCertificate = require('./certs');
 /* eslint-disable consistent-return, no-console */
 
 
 const imsResolver = {
-  start: function () {
-      const consumer = Consumer.create({
+  start: function (){
+    getCertificate()
+    const consumer = Consumer.create({
       queueUrl: config.aws.sqs.queueUrl,
       sqs: new SQSClient({
         region: config.aws.sqs.region,
@@ -29,7 +30,6 @@ const imsResolver = {
     consumer.on('processing_error', err => {
       console.error(err.message);
     });
-    certificate.getCertificate();
     consumer.start();
   },
 
