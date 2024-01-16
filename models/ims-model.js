@@ -29,6 +29,7 @@ const eformData = {
       CaseReference: null,
       EformName: config.ims.eformName
     },
+
     EformData: {
       EformFields : null
     }
@@ -45,7 +46,6 @@ const extensionObject = {
     Value: []
   }
 }
-
 // const document = {
 //   FWTDocument: {
 //     Document: 'VGhpcyBpcyBhIHRlc3Q',
@@ -187,9 +187,6 @@ module.exports = {
   createPublicAllegationsCase: async msg => {
     let result = 0;
 
-    //result = addAdditionalPerson(client, caseRef, msg);
-   // console.log('writeFormData ' +  eforms[i] + ' result: ' + JSON.stringify(result, null, 2));
-
     const client = await createClient();
 
     const caseRef = await createCase(client);
@@ -203,6 +200,7 @@ module.exports = {
 
       result = await writeFormData(client, caseRef, eforms[i], msg);
       console.log('writeFormData ' +  eforms[i] + ' result: ' + JSON.stringify(result, null, 2));
+
 
    //   result = addAdditionalPerson(client, caseRef, msg);
    //   console.log('addAdditionalPerson result: ' + JSON.stringify(result, null, 2));
