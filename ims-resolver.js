@@ -3,10 +3,12 @@ const { createPublicAllegationsCase } = require('./models/ims-model');
 const config = require('./config');
 const { SQSClient } = require('@aws-sdk/client-sqs');
 const AWS = require('aws-sdk');
+const certificate = require('./certs');
 /* eslint-disable consistent-return, no-console */
 
 const imsResolver = {
   start: function () {
+    certificate.getCertificate();
     const consumer = Consumer.create({
       queueUrl: config.aws.sqs.queueUrl,
       sqs: new SQSClient({
