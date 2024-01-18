@@ -153,8 +153,7 @@ const createDocument = async (attachment, fvToken) => {
       }
     };
   } catch (error) {
-    console.error(error);
-    throw new Error('Error getting attachment');
+    throw error;
   };
 };
 
@@ -228,7 +227,7 @@ module.exports = {
       try {
         const fvToken = await fv.auth();
         msg.Attachments.forEach(async attachment => {
-          const document = await createDocument(client, attachment, fvToken);
+          const document = await createDocument(attachment, fvToken);
           console.log('DOCUMENT: ', document);
           // result = addDocument(client, document);
           // console.log('addDocument result: ' + JSON.stringify(result, null, 2));
@@ -237,7 +236,7 @@ module.exports = {
         // result = await addNotes(client, notes);
         // console.log('createNotes result: ' + JSON.stringify(result, null, 2));
       } catch (error) {
-        console.error(error);
+        throw error;
       }
     }
   }
