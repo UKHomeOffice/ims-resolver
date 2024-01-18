@@ -154,7 +154,7 @@ const createDocument = async (attachment, fvToken) => {
     };
   } catch (error) {
     throw error;
-  };
+  }
 };
 
 // const addDocument = (client, document) =>

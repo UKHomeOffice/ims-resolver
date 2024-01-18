@@ -10,8 +10,7 @@
     "start": "node index.js --env",
     "start:dev": "nodemon -r dotenv/config index.js --env",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "test:lint": "eslint . --config ./node_modules/eslint-config-hof/default.js",
-    "test:snyk": "snyk config set api=SNYK_TOKEN && snyk test"
+    "test:lint": "eslint . --config ./node_modules/eslint-config-hof/default.js"
   },
   "repository": {
     "type": "git",
