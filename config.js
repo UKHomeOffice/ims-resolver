@@ -1,6 +1,6 @@
 'use strict';
 /* eslint no-process-env: 0 */
-const AWS = require('aws-sdk');
+// const AWS = require('aws-sdk');
 module.exports = {
   env: process.env.NODE_ENV,
   ims: {

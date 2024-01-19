@@ -1,20 +1,23 @@
-const https = require('https');
-const fs = require('fs');
+const https = require("https");
+const fs = require("fs");
 
-const path = require("path");
-//const file = fs.readFileSync(path.resolve(__dirname, "/etc/ssl/certs/ims-prp1-ca.crt"));
 const options = {
-    ca: fs.readFileSync("/etc/ssl/certs/ims-prp1-ca.crt")
-    };
-
-    
-
-    module.exports = function getRequest(){
-    https.get('https://ho-it-prp1-i-ie-ims.report-and-manage-intelligence.np.immigrationservices.phz/lagan/services/FL', options, (res) => {
-    // Handle the response
-    console.log(res)
-    });
-
+  ca: fs.readFileSync("/etc/ssl/certs/ims-prp1-ca.crt"),
 };
-// certificate.getCertificate();
-// certificate.options.ca;
+
+const getRequest = () => {
+  console.log('CA IN CHAIN: ', options.ca.toString().slice(0,25));
+//   https.get(
+//     "https://ho-it-prp1-i-ie-ims.report-and-manage-intelligence.np.immigrationservices.phz/lagan/services/FL",
+//     options,
+//     (err, res) => {
+//       if (err) {
+//         console.error(err.message);
+//       }
+//       // Handle the response
+//       console.log(res);
+//     }
+//   );
+};
+
+module.exports = { getRequest };
