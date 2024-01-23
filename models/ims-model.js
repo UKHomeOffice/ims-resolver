@@ -157,12 +157,12 @@ const createDocument = async (attachment, fvToken) => {
   }
 };
 
-// const addDocument = (client, document) =>
-//   new Promise((resolve, reject) =>
-//     client.addDocumentToRepository(document,
-//       (err, result) => (err ? reject(err) : resolve(result))
-//     )
-//   );
+const addDocument = (client, document) =>
+  new Promise((resolve, reject) =>
+    client.addDocumentToRepository(document,
+      (err, result) => (err ? reject(err) : resolve(result))
+    )
+  );
 
 // const createNotes = (attachmentRefs, caseRef) => {
 //   const { name, identifier } = attachmentRefs;
@@ -223,14 +223,14 @@ module.exports = {
     Send multiple notes if it is not possible to reference all attachments in one note.
     */
     if (msg.Attachments) {
-      // let attachmentRefs = [];
+      let attachmentRefs = [];
       try {
         const fvToken = await fv.auth();
         msg.Attachments.forEach(async attachment => {
           const document = await createDocument(attachment, fvToken);
           console.log('DOCUMENT: ', document);
-          // result = addDocument(client, document);
-          // console.log('addDocument result: ' + JSON.stringify(result, null, 2));
+          result = addDocument(client, document);
+          console.log('addDocument result: ' + JSON.stringify(result, null, 2));
         });
         // const notes = createNotes(attachmentRefs, caseRef);
         // result = await addNotes(client, notes);
