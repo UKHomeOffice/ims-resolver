@@ -30,7 +30,9 @@ const eformData = {
       CaseReference: null,
       EformName: config.ims.eformName
     },
-    EformData: null
+    EformData: {
+      EformFields : null
+    }
   }
 };
 
@@ -106,9 +108,8 @@ const addCaseForm = async (client, caseRef, eformDefinition, eformName) =>
 const writeFormData = async (client, caseRef, eform, msg) =>
   new Promise(function (resolve, reject) {
     console.log('eform: ', eform);
-    console.log('eform: ', eform.EformFields);
-    eformData.FLEformFields.CaseEformInstance.EformName = eform.EformFields;
-    eformData.FLEformFields.EformData = msg;
+    eformData.FLEformFields.CaseEformInstance.EformName = eform;
+    eformData.FLEformFields.EformData.EformFields = msg.EformFields;
     eformData.FLEformFields.CaseEformInstance.CaseReference = caseRef;
     setEformValues(eformData.FLEformFields.EformData, caseRef);
     client.writeCaseEformData(eformData,
@@ -189,9 +190,6 @@ module.exports = {
     const eformDefinitions = config.ims.eformDefinitions.split(', ');
     const eforms = config.ims.eforms.split(', ');
 
-    const attachments = msg.Attachments;
-    delete msg.Attachments;
-
     for (let i = 0; i < eformDefinitions.length; i++) {
       result = await addCaseForm(client, caseRef, eformDefinitions[i], eforms[i]);
       console.log('addCaseForm ' + eformDefinitions[i] + ' result: ' + JSON.stringify(result, null, 2));
@@ -200,11 +198,11 @@ module.exports = {
       console.log('writeFormData ' +  eforms[i] + ' result: ' + JSON.stringify(result, null, 2));
     }
 
-    if (attachments) {
+    if (msg.Attachments) {
       const attachmentRefs = [];
       try {
         const fvToken = await fv.auth();
-        for (const attachment of attachments) {
+        for (const attachment of msg.Attachments) {
           const document = await createDocument(attachment, fvToken);
           result = await addDocument(client, document);
           console.log('addDocument result: ' + JSON.stringify(result, null, 2));
