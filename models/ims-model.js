@@ -203,9 +203,11 @@ module.exports = {
       const attachmentUUIDs = [];
       try {
         const fvToken = await fv.auth();
+        console.log('FV token: ', fvToken);
         for (const attachment of msg.Attachments) {
           attachmentUUIDs.push(attachment.url.split('/file/')[1].split('?')[0]);
           const document = await createDocument(attachment, fvToken);
+          console.log('DOCUMENT: ', document);
           result = await addDocument(client, document);
           console.log('addDocument result: ' + JSON.stringify(result, null, 2));
           attachmentRefs.push({ name: attachment.name, identifier: result });
