@@ -30,29 +30,11 @@ const eformData = {
       CaseReference: null,
       EformName: config.ims.eformName
     },
-    EformData: null
+    EformData: {
+      EformFields : null
+    }
   }
 };
-
-// const notes = {
-//   FWTNoteToParentRef: {
-//     ParentId: null,
-//     ParentType: 0,
-//     NoteDetails: {
-//       Text: null,
-//       NoteLabels: {
-//         NoteLabel: 'test note label'
-//       },
-//       NoteAttachments: {
-//         NoteAttachmentList: {
-//           AttachmentName: 'test.txt',
-//           AttachmentIdentifier: null,
-//           AttachmentType: 0
-//         }
-//       }
-//     }
-//   }
-// };
 
 const setEformValue = (eform, fieldName, fieldValue) => {
   eform.EformFields.push({FieldName: fieldName, FieldValue: fieldValue});
@@ -126,9 +108,8 @@ const addCaseForm = async (client, caseRef, eformDefinition, eformName) =>
 const writeFormData = async (client, caseRef, eform, msg) =>
   new Promise(function (resolve, reject) {
     console.log('eform: ', eform);
-    console.log('eform: ', eform.EformFields);
-    eformData.FLEformFields.CaseEformInstance.EformName = eform.EformFields;
-    eformData.FLEformFields.EformData = msg;
+    eformData.FLEformFields.CaseEformInstance.EformName = eform;
+    eformData.FLEformFields.EformData.EformFields = msg.EformFields;
     eformData.FLEformFields.CaseEformInstance.CaseReference = caseRef;
     setEformValues(eformData.FLEformFields.EformData, caseRef);
     client.writeCaseEformData(eformData,
@@ -136,10 +117,10 @@ const writeFormData = async (client, caseRef, eform, msg) =>
     );
   });
 
-  const addAdditionalPerson = async (client, caseRef, eform, msg)=>
-    new Promise(function(resolve, reject) {
+// const addAdditionalPerson = async (client, caseRef, eform, msg)=>
+//   new Promise(function(resolve, reject) {
 
-  });
+//   });
 
 const createDocument = async (attachment, fvToken) => {
   try {
@@ -164,32 +145,36 @@ const createDocument = async (attachment, fvToken) => {
 //     )
 //   );
 
-// const createNotes = (attachmentRefs, caseRef) => {
-//   const { name, identifier } = attachmentRefs;
-//   return {
+// const createNote = (attachmentRefs, caseRef, attachmentUUIDs) => {
+//   const note = {
 //     FWTNoteToParentRef: {
 //       ParentId: caseRef,
 //       ParentType: 0,
 //       NoteDetails: {
-//         Text: 'Reporter document upload',
+//         Text: `Reporter document uploads. Files: ${attachmentUUIDs.join(', ')}`,
 //         NoteLabels: {
-//           NoteLabel: 'test note label'
+//           NoteLabel: ''
 //         },
 //         NoteAttachments: {
-//           NoteAttachmentList: {
-//             AttachmentName: name,
-//             AttachmentIdentifier: identifier,
-//             AttachmentType: 0
-//           }
+//           NoteAttachmentList: []
 //         }
 //       }
 //     }
 //   };
+//   for (const reference of attachmentRefs) {
+//     const { name, identifier } = reference;
+//     note.FWTNoteToParentRef.NoteDetails.NoteAttachments.NoteAttachmentList.push({
+//       AttachmentName: name,
+//       AttachmentIdentifier: identifier,
+//       AttachmentType: 0
+//     });
+//   }
+//   return note;
 // };
 
-// const addNote = (client, notes) =>
+// const addNote = (client, note) =>
 //   new Promise((resolve, reject) =>
-//     client.createNotes(document,
+//     client.createNotes(note,
 //       (err, result) => (err ? reject(err) : resolve(result))
 //     )
 //   );
@@ -213,27 +198,21 @@ module.exports = {
       console.log('writeFormData ' +  eforms[i] + ' result: ' + JSON.stringify(result, null, 2));
     }
 
-    /*
-    TODO
-    Add setup to send documents one at a time to IMS in the forEach loop.
-    retrieve IDs/refs and any other values from the result of the upload.
-    Store those values in attachmentRefs
-    Loop over attachmentRefs final values to create a notes object with all attachment refs listed.
-    Add setup to send the note to the case.
-    Send multiple notes if it is not possible to reference all attachments in one note.
-    */
     if (msg.Attachments) {
-      // let attachmentRefs = [];
+      // const attachmentRefs = [];
+      // const attachmentUUIDs = [];
       try {
         const fvToken = await fv.auth();
-        msg.Attachments.forEach(async attachment => {
+        for (const attachment of msg.Attachments) {
+          // attachmentUUIDs.push(attachment.url.split('/file/')[1].split('?')[0]);
           const document = await createDocument(attachment, fvToken);
-          console.log('DOCUMENT: ', document);
-          // result = addDocument(client, document);
+          console.log('DOCUMENT: ', document)
+          // result = await addDocument(client, document);
           // console.log('addDocument result: ' + JSON.stringify(result, null, 2));
-        });
-        // const notes = createNotes(attachmentRefs, caseRef);
-        // result = await addNotes(client, notes);
+          // attachmentRefs.push({ name: attachment.name, identifier: result });
+        }
+        // const note = createNote(attachmentRefs, caseRef, attachmentUUIDs);
+        // result = await addNote(client, note);
         // console.log('createNotes result: ' + JSON.stringify(result, null, 2));
       } catch (error) {
         throw error;
