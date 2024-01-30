@@ -2,7 +2,6 @@ const { Consumer } = require('sqs-consumer');
 const { createPublicAllegationsCase } = require('./models/ims-model');
 const config = require('./config');
 const { SQSClient } = require('@aws-sdk/client-sqs');
-const AWS = require('aws-sdk');
 /* eslint-disable consistent-return, no-console */
 
 const imsResolver = {
@@ -29,6 +28,7 @@ const imsResolver = {
     });
 
     consumer.start();
+    console.log(`Resolver is listening for messages from: ${config.aws.sqs.queueUrl}`);
   },
 
   handleMessage: async message => {
@@ -42,6 +42,8 @@ const imsResolver = {
         return resolve();
       } catch (err) {
         console.error(err.message);
+        // Temporarily resolve messages on error so that they don't hang in the queue
+        resolve(err.message);
       }
     });
   }
