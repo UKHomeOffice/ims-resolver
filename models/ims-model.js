@@ -117,10 +117,10 @@ const writeFormData = async (client, caseRef, eform, msg) =>
     );
   });
 
-  const addAdditionalPerson = async (client, caseRef, eform, msg)=>
-    new Promise(function(resolve, reject) {
+// const addAdditionalPerson = async (client, caseRef, eform, msg)=>
+//   new Promise(function(resolve, reject) {
 
-  });
+//   });
 
 const createDocument = async (attachment, fvToken) => {
   try {
