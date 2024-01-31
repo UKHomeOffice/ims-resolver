@@ -30,7 +30,7 @@ const eformData = {
       EformName: config.ims.eformName
     },
     EformData: {
-      EformFields : null
+      EformFields: null
     }
   }
 };
@@ -39,40 +39,14 @@ const extensionObject = {
   FLExtensionObjectCreate: {
     ObjectID: -1,
     BriefDetails: {
-      ObjectType: 20,
-      ObjectReference: -1
+      ObjectID: {
+        ObjectType: 20,
+        ObjectReference: -1
+      }
     },
     Value: []
   }
-}
-
-// const document = {
-//   FWTDocument: {
-//     Document: 'VGhpcyBpcyBhIHRlc3Q',
-//     DocumentType: 1,
-//     DocumentName: 'test.txt'
-//   }
-// };
-
-// const notes = {
-//   FWTNoteToParentRef: {
-//     ParentId: null,
-//     ParentType: 0,
-//     NoteDetails: {
-//       Text: null,
-//       NoteLabels: {
-//         NoteLabel: 'test note label'
-//       },
-//       NoteAttachments: {
-//         NoteAttachmentList: {
-//           AttachmentName: 'test.txt',
-//           AttachmentIdentifier: null,
-//           AttachmentType: 0
-//         }
-//       }
-//     }
-//   }
-// };
+};
 
 const setEformValue = (eform, fieldName, fieldValue) => {
   eform.EformFields.push({FieldName: fieldName, FieldValue: fieldValue});
@@ -156,39 +130,34 @@ const writeFormData = async (client, caseRef, eform, msg) =>
     );
   });
 
-  const addAdditionalPerson = async (client, caseRef, msg)=>
-    new Promise(function(resolve, reject) {
-      extensionObject.FLExtensionObjectCreate.Value.push({Key: 'CASEID', StringValue: caseRef});
-      extensionObject.FLExtensionObjectCreate.Value.push({Key: 'INITIALFORM', StringValue: 'Y'});
-      extensionObject.FLExtensionObjectCreate.Value.push({Key: 'FIRSTNAME', StringValue: 'Yankee'});
-      extensionObject.FLExtensionObjectCreate.Value.push({Key: 'SURNAME', StringValue: 'JACKSON'});
+const clearFormData =  () => {
+  eformData.FLEformFields.CaseEformInstance.EformName = null;
+  eformData.FLEformFields.EformData.EformFields = null;
+  eformData.FLEformFields.CaseEformInstance.CaseReference = null;
+  console.log('eformData: ', eformData);
+};
 
-      client.createExtensionObject(extensionObject,
-        (err, result) => (err ? reject(err) : resolve(result))
-      );
+const addAdditionalPerson = async (client, caseRef, additionalPerson) =>
+  new Promise(function (resolve, reject) {
+    extensionObject.FLExtensionObjectCreate.Value = additionalPerson;
+    extensionObject.FLExtensionObjectCreate.Value.push({Key: 'CASEID', StringValue: caseRef});
+    extensionObject.FLExtensionObjectCreate.Value.push({Key: 'INITIALFORM', StringValue: 'Y'});
+
+    client.createExtensionObject(extensionObject,
+      (err, result) => (err ? reject(err) : resolve(result))
+    );
   });
 
-
-// const addDocument = (client, document) =>
-//   new Promise((resolve, reject) =>
-//     client.addDocumentToRepository(document,
-//       (err, result) => (err ? reject(err) : resolve(result))
-//     )
-//   );
-
-// const createNotes = (client, notes) =>
-//   new Promise((resolve, reject) =>
-//     client.createNotes(document,
-//       (err, result) => (err ? reject(err) : resolve(result))
-//     )
-//   );
+const addAdditionalPeople = async (client, caseRef, additionalPeople) => {
+  for (let i = 0; i < additionalPeople.length; i++) {
+    const result = await addAdditionalPerson(client, caseRef, additionalPeople[i]);
+    console.log('addAdditionalPerson result: ' + JSON.stringify(result, null, 2));
+  }
+};
 
 module.exports = {
   createPublicAllegationsCase: async msg => {
     let result = 0;
-
-    //result = addAdditionalPerson(client, caseRef, msg);
-   // console.log('writeFormData ' +  eforms[i] + ' result: ' + JSON.stringify(result, null, 2));
 
     const client = await createClient();
 
@@ -204,14 +173,10 @@ module.exports = {
       result = await writeFormData(client, caseRef, eforms[i], msg);
       console.log('writeFormData ' +  eforms[i] + ' result: ' + JSON.stringify(result, null, 2));
 
-   //   result = addAdditionalPerson(client, caseRef, msg);
-   //   console.log('addAdditionalPerson result: ' + JSON.stringify(result, null, 2));
+      result = addAdditionalPeople(client, caseRef, msg.AdditionalPeople);
+      console.log('addAdditionalPeopleclient result: ' + JSON.stringify(result, null, 2));
     }
 
-    // result = await addDocument(client, document);
-    // console.log('addDocument result: ' + JSON.stringify(result, null, 2));
-
-    // result = await createNotes(client, notes);
-    // console.log('createNotes result: ' + JSON.stringify(result, null, 2));
+    clearFormData();
   }
 };
