@@ -66,16 +66,11 @@ const setEformValues = (eform, caseRef) => {
   setEformValue(eform, 'staffuserid', config.ims.apiUser);
   setEformValue(eform, 'dtborec', today.toLocaleDateString());
   setEformValue(eform, 'tmboec', time);
-
-  setEformValue(eform, 'rdaboutcontact', 'No');
-  setEformValue(eform, 'rdabout18', 'Yes');
-
   setEformValue(eform, 'txbofname', 'test');
   setEformValue(eform, 'txbosurname', 'test');
   setEformValue(eform, 'txbomobile', 'test');
   setEformValue(eform, 'txboemail', 'test@test.com');
   setEformValue(eform, 'rdbogroup', 'ImmigrationGroup');
-
   setEformValue(eform, 'rdbowho', 'Other');
   setEformValue(eform, 'txbodept', 'test');
 };
@@ -173,10 +168,10 @@ module.exports = {
 
       result = await writeFormData(client, caseRef, eforms[i], msg);
       console.log('writeFormData ' +  eforms[i] + ' result: ' + JSON.stringify(result, null, 2));
-
-      result = addAdditionalPeople(client, caseRef, msg.AdditionalPeople);
-      console.log('addAdditionalPeopleclient result: ' + JSON.stringify(result, null, 2));
     }
+
+    result = addAdditionalPeople(client, caseRef, msg.AdditionalPeople);
+    console.log('addAdditionalPeopleclient result: ' + JSON.stringify(result, null, 2));
 
     clearFormData();
   }
