@@ -54,9 +54,6 @@ const setEformValues = (eform, caseRef) => {
   setEformValue(eform, 'dtborec', today.toLocaleDateString());
   setEformValue(eform, 'tmboec', time);
 
-  setEformValue(eform, 'rdaboutcontact', 'No');
-  setEformValue(eform, 'rdabout18', 'Yes');
-
   setEformValue(eform, 'txbofname', 'test');
   setEformValue(eform, 'txbosurname', 'test');
   setEformValue(eform, 'txbomobile', 'test');
