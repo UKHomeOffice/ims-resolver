@@ -2,6 +2,7 @@
 /* eslint-disable consistent-return, no-console */
 const soap = require('strong-soap').soap;
 const config = require('../config');
+const fv = require('../lib/file-vault-utils');
 const wsdlUrl = config.ims.wsdl;
 
 const auth = `Basic:${Buffer.from(`${config.ims.apiUser}:${config.ims.apiPassword}`).toString('base64')}`;
@@ -29,7 +30,6 @@ const eformData = {
       CaseReference: null,
       EformName: config.ims.eformName
     },
-
     EformData: {
       EformFields: null
     }
@@ -112,7 +112,6 @@ const addCaseForm = async (client, caseRef, eformDefinition, eformName) =>
     );
   });
 
-
 const writeFormData = async (client, caseRef, eform, msg) =>
   new Promise(function (resolve, reject) {
     console.log('eform: ', eform);
@@ -138,16 +137,31 @@ const addAdditionalPerson = async (client, caseRef, additionalPerson) =>
     extensionObject.FLExtensionObjectCreate.Value = additionalPerson;
     extensionObject.FLExtensionObjectCreate.Value.push({Key: 'CASEID', StringValue: caseRef});
     extensionObject.FLExtensionObjectCreate.Value.push({Key: 'INITIALFORM', StringValue: 'Y'});
-
     client.createExtensionObject(extensionObject,
       (err, result) => (err ? reject(err) : resolve(result))
-    );
-  });
+  );
+});
 
 const addAdditionalPeople = async (client, caseRef, additionalPeople) => {
   for (let i = 0; i < additionalPeople.length; i++) {
     const result = await addAdditionalPerson(client, caseRef, additionalPeople[i]);
     console.log('addAdditionalPerson result: ' + JSON.stringify(result, null, 2));
+  }
+};
+
+const createDocument = async (attachment, fvToken) => {
+  try {
+    const file = await fv.getFile(attachment.url, fvToken);
+    const base64File = Buffer.from(file).toString('base64');
+    return {
+      FWTDocument: {
+        Document: base64File,
+        DocumentType: 1,
+        DocumentName: attachment.name
+      }
+    };
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -171,8 +185,29 @@ module.exports = {
     }
 
     result = addAdditionalPeople(client, caseRef, msg.AdditionalPeople);
-    console.log('addAdditionalPeopleclient result: ' + JSON.stringify(result, null, 2));
+    console.log('addAdditionalPeople result: ' + JSON.stringify(result, null, 2));
 
     clearFormData();
+
+    if (msg.Attachments) {
+      // const attachmentRefs = [];
+      // const attachmentUUIDs = [];
+      try {
+        const fvToken = await fv.auth();
+        for (const attachment of msg.Attachments) {
+          // attachmentUUIDs.push(attachment.url.split('/file/')[1].split('?')[0]);
+          const document = await createDocument(attachment, fvToken);
+          console.log('DOCUMENT: ', document)
+          // result = await addDocument(client, document);
+          // console.log('addDocument result: ' + JSON.stringify(result, null, 2));
+          // attachmentRefs.push({ name: attachment.name, identifier: result });
+        }
+        // const note = createNote(attachmentRefs, caseRef, attachmentUUIDs);
+        // result = await addNote(client, note);
+        // console.log('createNotes result: ' + JSON.stringify(result, null, 2));
+      } catch (error) {
+        throw error;
+      }
+    }
   }
 };
