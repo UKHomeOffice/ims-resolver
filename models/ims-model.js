@@ -63,13 +63,13 @@ const setEformValues = (eform, caseRef) => {
   setEformValue(eform, 'caseid', caseRef);
   setEformValue(eform, 'caseref', caseRef);
   setEformValue(eform, 'rdborec', 'Online');
-  setEformValue(eform, 'staffuserid', config.ims.apiUser);
+  //setEformValue(eform, 'staffuserid', config.ims.apiUser);
   setEformValue(eform, 'dtborec', today.toLocaleDateString());
   setEformValue(eform, 'tmboec', time);
-  setEformValue(eform, 'txbofname', 'test');
-  setEformValue(eform, 'txbosurname', 'test');
-  setEformValue(eform, 'txbomobile', 'test');
-  setEformValue(eform, 'txboemail', 'test@test.com');
+  //setEformValue(eform, 'txbofname', 'test');
+ // setEformValue(eform, 'txbosurname', 'test');
+  //setEformValue(eform, 'txbomobile', 'test');
+  //setEformValue(eform, 'txboemail', 'test@test.com');
   setEformValue(eform, 'rdbogroup', 'ImmigrationGroup');
   setEformValue(eform, 'rdbowho', 'Other');
   setEformValue(eform, 'txbodept', 'test');
