@@ -145,13 +145,13 @@ const addDocument = (client, document) =>
     )
   );
 
-const createNote = (attachmentRefs, caseRef, attachmentUUIDs) => {
+const createNote = (attachmentRefs, caseRef) => {
   const note = {
     FWTNoteToParentRef: {
       ParentId: caseRef,
       ParentType: 0,
       NoteDetails: {
-        Text: `Reporter document uploads. Files: ${attachmentUUIDs.join(', ')}`,
+        Text: 'Document attachments',
         NoteLabels: {
           NoteLabel: ''
         },
@@ -200,17 +200,15 @@ module.exports = {
 
     if (msg.Attachments) {
       const attachmentRefs = [];
-      const attachmentUUIDs = [];
       try {
         const fvToken = await fv.auth();
         for (const attachment of msg.Attachments) {
-          attachmentUUIDs.push(attachment.url.split('/file/')[1].split('?')[0]);
           const document = await createDocument(attachment, fvToken);
           result = await addDocument(client, document);
           console.log('addDocument result: ' + JSON.stringify(result, null, 2));
           attachmentRefs.push({ name: attachment.name, identifier: result });
         }
-        const note = createNote(attachmentRefs, caseRef, attachmentUUIDs);
+        const note = createNote(attachmentRefs, caseRef);
         result = await addNote(client, note);
         console.log('createNotes result: ' + JSON.stringify(result, null, 2));
       } catch (error) {
