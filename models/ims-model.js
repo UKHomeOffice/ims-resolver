@@ -138,46 +138,46 @@ const createDocument = async (attachment, fvToken) => {
   }
 };
 
-// const addDocument = (client, document) =>
-//   new Promise((resolve, reject) =>
-//     client.addDocumentToRepository(document,
-//       (err, result) => (err ? reject(err) : resolve(result))
-//     )
-//   );
+const addDocument = (client, document) =>
+  new Promise((resolve, reject) =>
+    client.addDocumentToRepository(document,
+      (err, result) => (err ? reject(err) : resolve(result))
+    )
+  );
 
-// const createNote = (attachmentRefs, caseRef, attachmentUUIDs) => {
-//   const note = {
-//     FWTNoteToParentRef: {
-//       ParentId: caseRef,
-//       ParentType: 0,
-//       NoteDetails: {
-//         Text: `Reporter document uploads. Files: ${attachmentUUIDs.join(', ')}`,
-//         NoteLabels: {
-//           NoteLabel: ''
-//         },
-//         NoteAttachments: {
-//           NoteAttachmentList: []
-//         }
-//       }
-//     }
-//   };
-//   for (const reference of attachmentRefs) {
-//     const { name, identifier } = reference;
-//     note.FWTNoteToParentRef.NoteDetails.NoteAttachments.NoteAttachmentList.push({
-//       AttachmentName: name,
-//       AttachmentIdentifier: identifier,
-//       AttachmentType: 0
-//     });
-//   }
-//   return note;
-// };
+const createNote = (attachmentRefs, caseRef) => {
+  const note = {
+    FWTNoteToParentRef: {
+      ParentId: caseRef,
+      ParentType: 0,
+      NoteDetails: {
+        Text: 'Document attachments',
+        NoteLabels: {
+          NoteLabel: ''
+        },
+        NoteAttachments: {
+          NoteAttachmentList: []
+        }
+      }
+    }
+  };
+  for (const reference of attachmentRefs) {
+    const { name, identifier } = reference;
+    note.FWTNoteToParentRef.NoteDetails.NoteAttachments.NoteAttachmentList.push({
+      AttachmentName: name,
+      AttachmentIdentifier: identifier,
+      AttachmentType: 0
+    });
+  }
+  return note;
+};
 
-// const addNote = (client, note) =>
-//   new Promise((resolve, reject) =>
-//     client.createNotes(note,
-//       (err, result) => (err ? reject(err) : resolve(result))
-//     )
-//   );
+const addNote = (client, note) =>
+  new Promise((resolve, reject) =>
+    client.createNotes(note,
+      (err, result) => (err ? reject(err) : resolve(result))
+    )
+  );
 
 module.exports = {
   createPublicAllegationsCase: async msg => {
@@ -199,21 +199,18 @@ module.exports = {
     }
 
     if (msg.Attachments) {
-      // const attachmentRefs = [];
-      // const attachmentUUIDs = [];
+      const attachmentRefs = [];
       try {
         const fvToken = await fv.auth();
         for (const attachment of msg.Attachments) {
-          // attachmentUUIDs.push(attachment.url.split('/file/')[1].split('?')[0]);
           const document = await createDocument(attachment, fvToken);
-          console.log('DOCUMENT: ', document)
-          // result = await addDocument(client, document);
-          // console.log('addDocument result: ' + JSON.stringify(result, null, 2));
-          // attachmentRefs.push({ name: attachment.name, identifier: result });
+          result = await addDocument(client, document);
+          console.log('addDocument result: ' + JSON.stringify(result, null, 2));
+          attachmentRefs.push({ name: attachment.name, identifier: result });
         }
-        // const note = createNote(attachmentRefs, caseRef, attachmentUUIDs);
-        // result = await addNote(client, note);
-        // console.log('createNotes result: ' + JSON.stringify(result, null, 2));
+        const note = createNote(attachmentRefs, caseRef);
+        result = await addNote(client, note);
+        console.log('createNotes result: ' + JSON.stringify(result, null, 2));
       } catch (error) {
         throw error;
       }
