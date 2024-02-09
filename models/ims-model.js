@@ -9,7 +9,10 @@ const auth = `Basic:${Buffer.from(`${config.ims.apiUser}:${config.ims.apiPasswor
 
 const caseType = {
   FWTCaseCreate: {
-    ClassificationEventCode: config.ims.PublicAllegationsEventCode
+    ClassificationEventCode: config.ims.PublicAllegationsEventCode,
+    Title : 'Incomplete Allegation',
+    Description : 'Allegation from Horizon',
+    Queue : 'Allegations Kainos'
   }
 };
 
@@ -53,17 +56,13 @@ const setEformValue = (eform, fieldName, fieldValue) => {
   eform.EformFields.push({FieldName: fieldName, FieldValue: fieldValue});
 };
 
-// Mandatory fields TBD - move to config
 const setEformValues = (eform, caseRef) => {
   const today = new Date();
   const time = today.getHours() + ':' + today.getMinutes();
 
- // setEformValue(eform, 'casenum', caseRef);
-//  setEformValue(eform, 'casenum_1', caseRef);
   setEformValue(eform, 'caseid', caseRef);
- // setEformValue(eform, 'caseref', caseRef);
- // setEformValue(eform, 'rdborec', 'Online');
   setEformValue(eform, 'dtborec', today.toLocaleDateString());
+  setEformValue(eform, 'tmboec', time);
 };
 
 const createClient = async () =>
