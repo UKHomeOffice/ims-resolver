@@ -198,7 +198,7 @@ module.exports = {
       console.log('writeFormData ' +  eforms[i] + ' result: ' + JSON.stringify(result, null, 2));
     }
 
-    if (msg.Attachments) {
+    if (msg.Attachments.length) {
       const attachmentRefs = [];
       try {
         const fvToken = await fv.auth();
