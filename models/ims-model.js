@@ -220,7 +220,8 @@ module.exports = {
 
     clearFormData();
 
-    if (msg.Attachments) {
+    if (msg.Attachments.length) {
+
       const attachmentRefs = [];
       try {
         const fvToken = await fv.auth();
