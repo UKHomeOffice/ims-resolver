@@ -9,7 +9,10 @@ const auth = `Basic:${Buffer.from(`${config.ims.apiUser}:${config.ims.apiPasswor
 
 const caseType = {
   FWTCaseCreate: {
-    ClassificationEventCode: config.ims.PublicAllegationsEventCode
+    ClassificationEventCode: config.ims.PublicAllegationsEventCode,
+    Title : 'Incomplete Allegation',
+    Description : 'Allegation from Horizon',
+    Queue : 'Allegations Kainos'
   }
 };
 
@@ -31,8 +34,21 @@ const eformData = {
       EformName: config.ims.eformName
     },
     EformData: {
-      EformFields : null
+      EformFields: null
     }
+  }
+};
+
+const extensionObject = {
+  FLExtensionObjectCreate: {
+    ObjectID: -1,
+    BriefDetails: {
+      ObjectID: {
+        ObjectType: 20,
+        ObjectReference: -1
+      }
+    },
+    Value: []
   }
 };
 
@@ -40,31 +56,13 @@ const setEformValue = (eform, fieldName, fieldValue) => {
   eform.EformFields.push({FieldName: fieldName, FieldValue: fieldValue});
 };
 
-// Mandatory fields TBD - move to config
 const setEformValues = (eform, caseRef) => {
   const today = new Date();
   const time = today.getHours() + ':' + today.getMinutes();
 
-  setEformValue(eform, 'casenum', caseRef);
-  setEformValue(eform, 'casenum_1', caseRef);
   setEformValue(eform, 'caseid', caseRef);
-  setEformValue(eform, 'caseref', caseRef);
-  setEformValue(eform, 'rdborec', 'Online');
-  setEformValue(eform, 'staffuserid', config.ims.apiUser);
   setEformValue(eform, 'dtborec', today.toLocaleDateString());
   setEformValue(eform, 'tmboec', time);
-
-  setEformValue(eform, 'rdaboutcontact', 'No');
-  setEformValue(eform, 'rdabout18', 'Yes');
-
-  setEformValue(eform, 'txbofname', 'test');
-  setEformValue(eform, 'txbosurname', 'test');
-  setEformValue(eform, 'txbomobile', 'test');
-  setEformValue(eform, 'txboemail', 'test@test.com');
-  setEformValue(eform, 'rdbogroup', 'ImmigrationGroup');
-
-  setEformValue(eform, 'rdbowho', 'Other');
-  setEformValue(eform, 'txbodept', 'test');
 };
 
 const createClient = async () =>
@@ -92,7 +90,7 @@ const createCase = async client =>
 const addCaseForm = async (client, caseRef, eformDefinition, eformName) =>
   new Promise(function (resolve, reject) {
     eForm.FWTCaseEformNew.CaseReference =
-      eForm.FLCaseEformInstance.CaseReference = caseRef;
+    eForm.FLCaseEformInstance.CaseReference = caseRef;
     eForm.FWTCaseEformNew.EformName = eformDefinition;
     eForm.FLCaseEformInstance.EformName = eformName;
     client.addCaseEform(eForm,
@@ -104,7 +102,6 @@ const addCaseForm = async (client, caseRef, eformDefinition, eformName) =>
     );
   });
 
-
 const writeFormData = async (client, caseRef, eform, msg) =>
   new Promise(function (resolve, reject) {
     console.log('eform: ', eform);
@@ -112,15 +109,35 @@ const writeFormData = async (client, caseRef, eform, msg) =>
     eformData.FLEformFields.EformData.EformFields = msg.EformFields;
     eformData.FLEformFields.CaseEformInstance.CaseReference = caseRef;
     setEformValues(eformData.FLEformFields.EformData, caseRef);
+    console.log('eformData: ', eformData);
     client.writeCaseEformData(eformData,
       (err, result) => (err ? reject(err) : resolve(result))
     );
   });
 
-// const addAdditionalPerson = async (client, caseRef, eform, msg)=>
-//   new Promise(function(resolve, reject) {
+const clearFormData =  () => {
+  eformData.FLEformFields.CaseEformInstance.EformName = null;
+  eformData.FLEformFields.EformData.EformFields = null;
+  eformData.FLEformFields.CaseEformInstance.CaseReference = null;
+  console.log('eformData: ', eformData);
+};
 
-//   });
+const addAdditionalPerson = async (client, caseRef, additionalPerson) =>
+  new Promise(function (resolve, reject) {
+    extensionObject.FLExtensionObjectCreate.Value = additionalPerson;
+    extensionObject.FLExtensionObjectCreate.Value.push({Key: 'CASEID', StringValue: caseRef});
+    extensionObject.FLExtensionObjectCreate.Value.push({Key: 'INITIALFORM', StringValue: 'Y'});
+    client.createExtensionObject(extensionObject,
+      (err, result) => (err ? reject(err) : resolve(result))
+  );
+});
+
+const addAdditionalPeople = async (client, caseRef, additionalPeople) => {
+  for (let i = 0; i < additionalPeople.length; i++) {
+    const result = await addAdditionalPerson(client, caseRef, additionalPeople[i]);
+    console.log('addAdditionalPerson result: ' + JSON.stringify(result, null, 2));
+  }
+};
 
 const createDocument = async (attachment, fvToken) => {
   try {
@@ -198,7 +215,13 @@ module.exports = {
       console.log('writeFormData ' +  eforms[i] + ' result: ' + JSON.stringify(result, null, 2));
     }
 
+    result = addAdditionalPeople(client, caseRef, msg.AdditionalPeople);
+    console.log('addAdditionalPeople result: ' + JSON.stringify(result, null, 2));
+
+    clearFormData();
+
     if (msg.Attachments.length) {
+
       const attachmentRefs = [];
       try {
         const fvToken = await fv.auth();

@@ -38,10 +38,10 @@ const imsResolver = {
 
       try {
         await createPublicAllegationsCase(messageBody);
-
         return resolve();
       } catch (err) {
         console.error(err.message);
+        console.error(err);
         // Temporarily resolve messages on error so that they don't hang in the queue
         resolve(err.message);
       }
