@@ -10,9 +10,9 @@ const auth = `Basic:${Buffer.from(`${config.ims.apiUser}:${config.ims.apiPasswor
 const caseType = {
   FWTCaseCreate: {
     ClassificationEventCode: config.ims.PublicAllegationsEventCode,
-    Title : 'Incomplete Allegation',
-    Description : 'Allegation from Horizon',
-    Queue : 'Allegations Kainos'
+    Title : config.ims.title,
+    Description : config.ims.description,
+    Queue : config.ims.queue
   }
 };
 
