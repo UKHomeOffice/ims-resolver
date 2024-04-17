@@ -2,6 +2,7 @@ const { Consumer } = require('sqs-consumer');
 const { createPublicAllegationsCase } = require('./models/ims-model');
 const config = require('./config');
 const { SQSClient } = require('@aws-sdk/client-sqs');
+var parser = require('xml2json');
 /* eslint-disable consistent-return, no-console */
 
 const imsResolver = {
@@ -41,6 +42,8 @@ const imsResolver = {
         return resolve();
       } catch (err) {
         console.error(err.message);
+        var json = parser.toJson(data);
+        console.log("xml error: ", json);
       }
     });
   }
