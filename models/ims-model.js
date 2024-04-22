@@ -9,10 +9,7 @@ const auth = `Basic:${Buffer.from(`${config.ims.apiUser}:${config.ims.apiPasswor
 
 const caseType = {
   FWTCaseCreate: {
-    ClassificationEventCode: config.ims.PublicAllegationsEventCode,
-    Title : config.ims.title,
-    Description : config.ims.description,
-    Queue : config.ims.queue
+    ClassificationEventCode: config.ims.PublicAllegationsEventCode
   }
 };
 
@@ -225,9 +222,6 @@ module.exports = {
 
     const client = await createClient();
     console.log("client created");
-
-    const aCase = await retrieveCase(client);
-    console.log("retrieved case: " + JSON.stringify(aCase, null, 2));
 
     const caseRef = await createCase(client);
     console.log("case created");
