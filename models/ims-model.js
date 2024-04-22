@@ -77,8 +77,10 @@ const createClient = async () =>
   new Promise((resolve, reject) =>
     soap.createClient(wsdlUrl, { wsdl_headers: { Authorization: auth } }, (err, client) => {
       if (err) {return reject(err);}
+      console.log('client created');
       client.setEndpoint(config.ims.endpoint);
       client.setSecurity(new soap.BasicAuthSecurity(config.ims.apiUser, config.ims.apiPassword));
+      console.log('end point and security set');
       return resolve(client);
     }
     )
