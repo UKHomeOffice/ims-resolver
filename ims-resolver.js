@@ -41,6 +41,7 @@ const imsResolver = {
         return resolve();
       } catch (err) {
         console.error(err.message);
+        console.error(err);
       }
     });
   }
