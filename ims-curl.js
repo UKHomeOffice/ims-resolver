@@ -28,6 +28,7 @@ const imsCurl = {
     curl.setOpt(Curl.option.POSTFIELDS, soapXml);
     curl.setOpt(Curl.option.HTTPHEADER, ['Content-Type: text/xml', 'SOAPAction: your_soap_action_here']);
     curl.setOpt(Curl.option.VERBOSE, true); // Enable verbose mode for debugging
+    curl.setOpt(Curl.option.SSL_VERIFYPEER, false); // Ignore SSL certificate verification
 
     curl.on('end', (statusCode, body, headers) => {
       console.log('Response:', body);
