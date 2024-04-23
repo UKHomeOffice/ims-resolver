@@ -9,20 +9,12 @@ const auth = `Basic:${Buffer.from(`${config.ims.apiUser}:${config.ims.apiPasswor
 
 const caseType = {
   FWTCaseCreate: {
-    ClassificationEventCode: config.ims.PublicAllegationsEventCode
+    ClassificationEventCode: config.ims.PublicAllegationsEventCode,
+    Title : config.ims.title,
+    Description : config.ims.description,
+    Queue : config.ims.queue
   }
 };
-
-const caseDetails = {
-  FWTCaseFullDetailsRequest: {
-    CaseReference: 101001137872,
-    Option:"all"
-  },
-  FLCaseEformInstance: {
-    CaseReference: 101001137872,
-    EformName:"allegationsHorizon"
-  }
-}
 
 const eForm = {
   FWTCaseEformNew: {
@@ -97,17 +89,6 @@ const createCase = async client =>
       }
     )
   );
-
-  const retrieveCase = async (client) =>
-  new Promise(function (resolve, reject) {
-    client.retrieveCaseDetails(caseDetails,
-      (err, result) => {
-        if (err) {return reject(err);}
-
-        return resolve(result);
-      }
-    );
-  });
 
 const addCaseForm = async (client, caseRef, eformDefinition, eformName) =>
   new Promise(function (resolve, reject) {
@@ -228,39 +209,39 @@ module.exports = {
     const caseRef = await createCase(client);
     console.log("case created");
 
-    // const eformDefinitions = config.ims.eformDefinitions.split(', ');
-    // const eforms = config.ims.eforms.split(', ');
+    const eformDefinitions = config.ims.eformDefinitions.split(', ');
+    const eforms = config.ims.eforms.split(', ');
 
-    // for (let i = 0; i < eformDefinitions.length; i++) {
-    //   result = await addCaseForm(client, caseRef, eformDefinitions[i], eforms[i]);
-    //   console.log('addCaseForm ' + eformDefinitions[i] + ' result: ' + JSON.stringify(result, null, 2));
+    for (let i = 0; i < eformDefinitions.length; i++) {
+      result = await addCaseForm(client, caseRef, eformDefinitions[i], eforms[i]);
+      console.log('addCaseForm ' + eformDefinitions[i] + ' result: ' + JSON.stringify(result, null, 2));
 
-    //   result = await writeFormData(client, caseRef, eforms[i], msg);
-    //   console.log('writeFormData ' +  eforms[i] + ' result: ' + JSON.stringify(result, null, 2));
-    // }
+      result = await writeFormData(client, caseRef, eforms[i], msg);
+      console.log('writeFormData ' +  eforms[i] + ' result: ' + JSON.stringify(result, null, 2));
+    }
 
-    // result = addAdditionalPeople(client, caseRef, msg.AdditionalPeople);
-    // console.log('addAdditionalPeople result: ' + JSON.stringify(result, null, 2));
+    result = addAdditionalPeople(client, caseRef, msg.AdditionalPeople);
+    console.log('addAdditionalPeople result: ' + JSON.stringify(result, null, 2));
 
-    // clearFormData();
+    clearFormData();
 
-    // if (msg.Attachments.length) {
+    if (msg.Attachments.length) {
 
-    //   const attachmentRefs = [];
-    //   try {
-    //     const fvToken = await fv.auth();
-    //     for (const attachment of msg.Attachments) {
-    //       const document = await createDocument(attachment, fvToken);
-    //       result = await addDocument(client, document);
-    //       console.log('addDocument result: ' + JSON.stringify(result, null, 2));
-    //       attachmentRefs.push({ name: attachment.name, identifier: result });
-    //     }
-    //     const note = createNote(attachmentRefs, caseRef);
-    //     result = await addNote(client, note);
-    //     console.log('createNotes result: ' + JSON.stringify(result, null, 2));
-    //   } catch (error) {
-    //     throw error;
-    //   }
-    // }
+      const attachmentRefs = [];
+      try {
+        const fvToken = await fv.auth();
+        for (const attachment of msg.Attachments) {
+          const document = await createDocument(attachment, fvToken);
+          result = await addDocument(client, document);
+          console.log('addDocument result: ' + JSON.stringify(result, null, 2));
+          attachmentRefs.push({ name: attachment.name, identifier: result });
+        }
+        const note = createNote(attachmentRefs, caseRef);
+        result = await addNote(client, note);
+        console.log('createNotes result: ' + JSON.stringify(result, null, 2));
+      } catch (error) {
+        throw error;
+      }
+    }
   }
 };
