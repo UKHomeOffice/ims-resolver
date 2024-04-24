@@ -35,7 +35,10 @@ const imsCurl = {
       curl.close();
     });
 
-    curl.on('error', curl.close.bind(curl));
+    curl.on('error', (error) => {
+      console.error('Error:', error);
+      curl.close();
+    });
 
     curl.perform();
   }
