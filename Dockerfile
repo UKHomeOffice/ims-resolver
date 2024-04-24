@@ -4,6 +4,7 @@ USER root
 
 # Update packages as a result of Anchore security vulnerability checks
 RUN apk update && \
+    apk add libcurl-dev curl-dev openssl-dev \
     apk add --upgrade gnutls binutils nodejs npm apk-tools libjpeg-turbo libcurl libx11 libxml2 libcurl-dev curl-dev openssl-dev
 
 # Setup nodejs group & nodejs user
