@@ -3,8 +3,9 @@ FROM node:lts-alpine@sha256:b78c9500958805b52214e8bd588defe55ec32116dfdc094e3ca6
 USER root
 
 # Update packages as a result of Anchore security vulnerability checks
+# adding curl-dev and openssl-dev as we are attempting to use node-libcurl
 RUN apk update && \
-    apk add --upgrade gnutls binutils nodejs npm apk-tools libjpeg-turbo libcurl libx11 libxml2 curl
+    apk add --upgrade gnutls binutils nodejs npm apk-tools libjpeg-turbo libcurl libx11 libxml2 curl curl-dev openssl-dev
 
 # Setup nodejs group & nodejs user
 RUN addgroup --system nodejs --gid 998 && \
