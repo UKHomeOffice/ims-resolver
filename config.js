@@ -7,9 +7,9 @@ module.exports = {
     apiUser: process.env.IMS_API_USER,
     apiPassword: process.env.IMS_API_PASSWORD,
     PublicAllegationsEventCode: 4000041,
-    title : 'Incomplete Allegation',
-    description : 'Allegation from Horizon',
-    queue : 'Allegations Kainos',
+    title: 'Incomplete Allegation',
+    description: 'Allegation from Horizon',
+    queue: 'Allegations Kainos',
     eformDefinitions: 'Allegations READ ONLY, Allegations EDITABLE',
     eforms: 'allegationsTablet, allegationsHorizon',
     endpoint: process.env.IMS_ENDPOINT
@@ -30,4 +30,3 @@ module.exports = {
     secret: process.env.KEYCLOAK_SECRET
   }
 };
-
