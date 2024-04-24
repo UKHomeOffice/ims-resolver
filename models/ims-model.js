@@ -72,6 +72,9 @@ const createClient = async () =>
       console.log('client created');
       client.setEndpoint(config.ims.endpoint);
       client.setSecurity(new soap.BasicAuthSecurity(config.ims.apiUser, config.ims.apiPassword));
+      console.log(config.ims.apiUser);
+      console.log(config.ims.apiPassword);
+      console.log(auth);
       console.log('end point and security set');
       return resolve(client);
     }
