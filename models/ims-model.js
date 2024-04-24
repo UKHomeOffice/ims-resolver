@@ -83,15 +83,14 @@ const createClient = async () =>
 const createCase = async client =>
   new Promise((resolve, reject) =>
     client.createCase(caseType,
-      (err, result, envelope, soapHeader) => {
+      (err, result, envelope) => {
         if (err) {
-          console.log('last request: ', client.lastRequest);
+          console.log('ERROR: last request: ', client.lastRequest);
           return reject(err);
         }
-        console.log('Case reference: ' + JSON.stringify(result, null, 2));
         console.log('Envelope: ', JSON.stringify(envelope, null, 2));
-        console.log('SOAP Headers: ', JSON.stringify(soapHeader, null, 2));
         console.log('last request: ', client.lastRequest);
+        console.log('Case reference: ' + JSON.stringify(result, null, 2));
         return resolve(result);
       }
     )
