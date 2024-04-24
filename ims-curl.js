@@ -1,5 +1,6 @@
 const { Curl } = require('node-libcurl');
 const config = require('./config');
+const timestamp = new Date().toISOString();
 
 const imsCurl = {
   start: () => {
@@ -31,12 +32,13 @@ const imsCurl = {
     curl.setOpt(Curl.option.SSL_VERIFYPEER, false); // Ignore SSL certificate verification
 
     curl.on('end', (statusCode, body, headers) => {
-      console.log('Response:', body);
+      console.log(`[${timestamp}] statusCode:', ${statusCode}`);
+      console.log(`[${timestamp}] Response:', ${body}`);
       curl.close();
     });
 
     curl.on('error', (error) => {
-      console.error('Error:', error);
+      console.log(`[${timestamp}] Error:', ${error}`);
       curl.close();
     });
 
