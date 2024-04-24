@@ -10,9 +10,9 @@ const auth = `Basic:${Buffer.from(`${config.ims.apiUser}:${config.ims.apiPasswor
 const caseType = {
   FWTCaseCreate: {
     ClassificationEventCode: config.ims.PublicAllegationsEventCode,
-    Title : config.ims.title,
-    Description : config.ims.description,
-    Queue : config.ims.queue
+    Title: config.ims.title,
+    Description: config.ims.description,
+    Queue: config.ims.queue
   }
 };
 
@@ -73,6 +73,8 @@ const createClient = async () =>
       client.setEndpoint(config.ims.endpoint);
       client.setSecurity(new soap.BasicAuthSecurity(config.ims.apiUser, config.ims.apiPassword));
       console.log('end point and security set');
+      const description = client.describe();
+      console.log('WSDL:\n', description);
       return resolve(client);
     }
     )
@@ -81,9 +83,15 @@ const createClient = async () =>
 const createCase = async client =>
   new Promise((resolve, reject) =>
     client.createCase(caseType,
-      (err, result) => {
-        if (err) {return reject(err);}
+      (err, result, envelope, soapHeader) => {
+        if (err) {
+          console.log('last request: ', client.lastRequest);
+          return reject(err);
+        }
         console.log('Case reference: ' + JSON.stringify(result, null, 2));
+        console.log('Envelope: ', JSON.stringify(envelope, null, 2));
+        console.log('SOAP Headers: ', JSON.stringify(soapHeader, null, 2));
+        console.log('last request: ', client.lastRequest);
         return resolve(result);
       }
     )
@@ -131,8 +139,8 @@ const addAdditionalPerson = async (client, caseRef, additionalPerson) =>
     extensionObject.FLExtensionObjectCreate.Value.push({Key: 'INITIALFORM', StringValue: 'Y'});
     client.createExtensionObject(extensionObject,
       (err, result) => (err ? reject(err) : resolve(result))
-  );
-});
+    );
+  });
 
 const addAdditionalPeople = async (client, caseRef, additionalPeople) => {
   for (let i = 0; i < additionalPeople.length; i++) {
@@ -204,6 +212,8 @@ module.exports = {
 
     const client = await createClient();
 
+    console.log('CLIENT\n', client)
+
     const caseRef = await createCase(client);
 
     const eformDefinitions = config.ims.eformDefinitions.split(', ');
@@ -223,7 +233,6 @@ module.exports = {
     clearFormData();
 
     if (msg.Attachments.length) {
-
       const attachmentRefs = [];
       try {
         const fvToken = await fv.auth();
