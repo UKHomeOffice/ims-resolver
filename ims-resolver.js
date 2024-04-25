@@ -40,8 +40,10 @@ const imsResolver = {
         await createPublicAllegationsCase(messageBody);
         return resolve();
       } catch (err) {
+        const timestamp = new Date().toISOString()
+        console.log(timestamp);
         console.error(err.message);
-        console.error(err);
+        console.error(err.body);
       }
     });
   }

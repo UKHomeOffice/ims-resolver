@@ -72,6 +72,9 @@ const createClient = async () =>
       console.log('client created');
       client.setEndpoint(config.ims.endpoint);
       client.setSecurity(new soap.BasicAuthSecurity(config.ims.apiUser, config.ims.apiPassword));
+      console.log(config.ims.apiUser);
+      console.log(config.ims.apiPassword);
+      console.log(auth);
       console.log('end point and security set');
       return resolve(client);
     }
@@ -84,6 +87,7 @@ const createCase = async client =>
       (err, result) => {
         if (err) {return reject(err);}
         console.log('Case reference: ' + JSON.stringify(result, null, 2));
+        console.log(result);
         return resolve(result);
       }
     )
@@ -203,8 +207,10 @@ module.exports = {
     let result = 0;
 
     const client = await createClient();
+    console.log("client created");
 
     const caseRef = await createCase(client);
+    console.log("case created");
 
     const eformDefinitions = config.ims.eformDefinitions.split(', ');
     const eforms = config.ims.eforms.split(', ');
