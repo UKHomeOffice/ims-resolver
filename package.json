@@ -25,6 +25,7 @@
   "dependencies": {
     "@aws-sdk/client-sqs": "^3.441.0",
     "axios": "^1.6.7",
+    "node-libcurl": "^4.0.0",
     "sqs-consumer": "^9.1.0",
     "strong-soap": "^3.4.1"
   },
