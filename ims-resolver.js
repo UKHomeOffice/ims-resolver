@@ -32,7 +32,7 @@ const imsResolver = {
   },
 
   handleMessage: async message => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async resolve => {
       const messageBody = JSON.parse(message.Body);
       // console.log(messageBody);
 
