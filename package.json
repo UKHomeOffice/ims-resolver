@@ -10,6 +10,7 @@
     "start": "node index.js --env",
     "start:dev": "nodemon -r dotenv/config index.js --env",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "test:snyk": "snyk config set api=SNYK_TOKEN && snyk test",
     "test:lint": "eslint . --config ./node_modules/eslint-config-hof/default.js"
   },
   "repository": {
@@ -25,6 +26,7 @@
   "dependencies": {
     "@aws-sdk/client-sqs": "^3.441.0",
     "axios": "^1.6.7",
+    "snyk": "^1.1290.0",
     "sqs-consumer": "^9.1.0",
     "strong-soap": "^3.4.1"
   },
