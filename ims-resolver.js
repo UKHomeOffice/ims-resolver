@@ -34,14 +34,17 @@ const imsResolver = {
   handleMessage: async message => {
     return new Promise(async resolve => {
       const messageBody = JSON.parse(message.Body);
-      console.log(messageBody);
+      // console.log(messageBody);
 
       try {
         await createPublicAllegationsCase(messageBody);
         return resolve();
       } catch (err) {
-        console.error(err.message);
-        console.error(err);
+        const tzoffset = (new Date()).getTimezoneOffset() * 60000;
+        const localISOTime = (new Date(Date.now() - tzoffset)).toISOString();
+        console.error(localISOTime, err.message);
+        console.error(localISOTime, err.body);
+        return reject(err);
       }
     });
   }

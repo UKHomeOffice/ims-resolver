@@ -3,7 +3,23 @@ version: v1.19.0
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
   SNYK-JS-JSONSCHEMA-1920922:
-    - hof > request > http-signature > jsprim > json-schema:
-        reason: Need to replace request module in hof
-        expires: '2022-12-18T14:49:41.738Z'
+  - '*':
+      reason: No direct upgrade or patch available
+      expires: '2024-11-01T17:02:21.865Z'
+  SNYK-JS-REQUEST-3361831:
+  - '*':
+      reason: No direct upgrade or patch available
+      expires: '2024-11-01T17:02:21.865Z'
+  SNYK-JS-TOUGHCOOKIE-5672873:
+  - '*':
+      reason: No direct upgrade or patch available
+      expires: '2024-11-01T17:02:21.865Z'
+  SNYK-JS-FOLLOWREDIRECTS-6444610:
+  - '*':
+      reason: No direct upgrade or patch available
+      expires: '2024-11-01T17:02:21.865Z'
+  SNYK-JS-INFLIGHT-6095116:
+  - '*':
+      reason: No direct upgrade or patch available
+      expires: '2024-11-01T17:02:21.865Z'
 patch: {}
