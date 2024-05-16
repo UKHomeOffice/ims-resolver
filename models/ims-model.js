@@ -217,7 +217,7 @@ module.exports = {
       console.log('writeFormData ' +  eforms[i] + ' result: ' + JSON.stringify(result, null, 2));
     }
 
-    result = addAdditionalPeople(client, caseRef, msg.AdditionalPeople);
+    result = await addAdditionalPeople(client, caseRef, msg.AdditionalPeople);
     console.log('addAdditionalPeople result: ' + JSON.stringify(result, null, 2));
 
     clearFormData();
