@@ -32,17 +32,22 @@ const imsResolver = {
   },
 
   handleMessage: async message => {
-    console.dir(message, {depth: null});
     return new Promise(async (resolve, reject) => {
       const messageBody = JSON.parse(message.Body);
+      const messageId = message.MessageId;
+      const previousReceives = message.Attributes.ApproximateReceiveCount;
+      const tzoffset = (new Date()).getTimezoneOffset() * 60000;
+      const messageCreatedAt = new Date(message.Attributes.SentTimestamp - tzoffset).toISOString();
       // console.log(messageBody);
 
       try {
+        const localISOTime = (new Date(Date.now() - tzoffset)).toISOString();
+        console.log(localISOTime, `Processing message ID: ${messageId}`);
+        console.log(localISOTime, `Message created: ${messageCreatedAt}`);
+        console.log(localISOTime, `Previous receive count: ${previousReceives}`);
         await createPublicAllegationsCase(messageBody);
         return resolve();
       } catch (err) {
-        const tzoffset = (new Date()).getTimezoneOffset() * 60000;
-        const localISOTime = (new Date(Date.now() - tzoffset)).toISOString();
         console.error(localISOTime, err.message);
         console.error(localISOTime, err.body);
         return reject(err);
