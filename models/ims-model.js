@@ -104,12 +104,12 @@ const addCaseForm = async (client, caseRef, eformDefinition, eformName) =>
 
 const writeFormData = async (client, caseRef, eform, msg) =>
   new Promise(function (resolve, reject) {
-    // console.log('eform: ', eform);
+    console.log('eform: ', eform);
     eformData.FLEformFields.CaseEformInstance.EformName = eform;
     eformData.FLEformFields.EformData.EformFields = msg.EformFields;
     eformData.FLEformFields.CaseEformInstance.CaseReference = caseRef;
     setEformValues(eformData.FLEformFields.EformData, caseRef);
-    // console.log('eformData: ', eformData);
+    console.log('eformData: ', eformData);
     client.writeCaseEformData(eformData,
       (err, result) => (err ? reject(err) : resolve(result))
     );
@@ -119,7 +119,7 @@ const clearFormData =  () => {
   eformData.FLEformFields.CaseEformInstance.EformName = null;
   eformData.FLEformFields.EformData.EformFields = null;
   eformData.FLEformFields.CaseEformInstance.CaseReference = null;
-  // console.log('eformData: ', eformData);
+  console.log('eformData: ', eformData);
 };
 
 const addAdditionalPerson = async (client, caseRef, additionalPerson) =>
@@ -199,24 +199,29 @@ const addNote = (client, note) =>
 module.exports = {
   createPublicAllegationsCase: async msg => {
     let result = 0;
+    const localISOTime = (new Date(Date.now() - tzoffset)).toISOString();
+        console.error(localISOTime, err.message);
 
     const client = await createClient();
 
+    console.log(localISOTime + 'creating case');
+    console.log('case type: ' + caseType);
     const caseRef = await createCase(client);
+    console.log(localISOTime + 'case created');
 
     const eformDefinitions = config.ims.eformDefinitions.split(', ');
     const eforms = config.ims.eforms.split(', ');
 
     for (let i = 0; i < eformDefinitions.length; i++) {
       result = await addCaseForm(client, caseRef, eformDefinitions[i], eforms[i]);
-      // console.log('addCaseForm ' + eformDefinitions[i] + ' result: ' + JSON.stringify(result, null, 2));
+      console.log('addCaseForm ' + eformDefinitions[i] + ' result: ' + JSON.stringify(result, null, 2));
 
       result = await writeFormData(client, caseRef, eforms[i], msg);
-      // console.log('writeFormData ' +  eforms[i] + ' result: ' + JSON.stringify(result, null, 2));
+      console.log('writeFormData ' +  eforms[i] + ' result: ' + JSON.stringify(result, null, 2));
     }
 
     result = await addAdditionalPeople(client, caseRef, msg.AdditionalPeople);
-    // console.log('addAdditionalPeople result: ' + JSON.stringify(result, null, 2));
+    console.log('addAdditionalPeople result: ' + JSON.stringify(result, null, 2));
 
     clearFormData();
 
@@ -227,12 +232,12 @@ module.exports = {
         for (const attachment of msg.Attachments) {
           const document = await createDocument(attachment, fvToken);
           result = await addDocument(client, document);
-          // console.log('addDocument result: ' + JSON.stringify(result, null, 2));
+          console.log('addDocument result: ' + JSON.stringify(result, null, 2));
           attachmentRefs.push({ name: attachment.name, identifier: result });
         }
         const note = createNote(attachmentRefs, caseRef);
         result = await addNote(client, note);
-        // console.log('createNotes result: ' + JSON.stringify(result, null, 2));
+        console.log('createNotes result: ' + JSON.stringify(result, null, 2));
       } catch (error) {
         throw error;
       }

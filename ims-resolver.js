@@ -34,7 +34,7 @@ const imsResolver = {
   handleMessage: async message => {
     return new Promise(async (resolve, reject) => {
       const messageBody = JSON.parse(message.Body);
-      // console.log(messageBody);
+      console.log(messageBody);
 
       try {
         await createPublicAllegationsCase(messageBody);
