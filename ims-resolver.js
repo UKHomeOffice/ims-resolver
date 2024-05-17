@@ -32,6 +32,7 @@ const imsResolver = {
   },
 
   handleMessage: async message => {
+    console.dir(message, {depth: null});
     return new Promise(async (resolve, reject) => {
       const messageBody = JSON.parse(message.Body);
       // console.log(messageBody);
