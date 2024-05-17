@@ -4,6 +4,7 @@ const soap = require('strong-soap').soap;
 const config = require('../config');
 const fv = require('../lib/file-vault-utils');
 const wsdlUrl = config.ims.wsdl;
+const logger = require('../lib/logger')({ env: config.env });
 
 const auth = `Basic:${Buffer.from(`${config.ims.apiUser}:${config.ims.apiPassword}`).toString('base64')}`;
 
@@ -81,7 +82,7 @@ const createCase = async client =>
     client.createCase(caseType,
       (err, result) => {
         if (err) {return reject(err);}
-        console.log('Case reference: ' + JSON.stringify(result, null, 2));
+        logger.log('info', `Case reference: ${JSON.stringify(result, null, 2)}`);
         return resolve(result);
       }
     )

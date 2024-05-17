@@ -2,6 +2,7 @@ const { Consumer } = require('sqs-consumer');
 const { createPublicAllegationsCase } = require('./models/ims-model');
 const config = require('./config');
 const { SQSClient } = require('@aws-sdk/client-sqs');
+const logger = require('./lib/logger')({ env: config.env });
 /* eslint-disable consistent-return, no-console */
 
 const imsResolver = {
@@ -28,7 +29,7 @@ const imsResolver = {
     });
 
     consumer.start();
-    console.log(`Resolver is listening for messages from: ${config.aws.sqs.queueUrl}`);
+    logger.log('info', `Resolver is listening for messages from: ${config.aws.sqs.queueUrl}`);
   },
 
   handleMessage: async message => {
@@ -38,19 +39,17 @@ const imsResolver = {
       const previousReceives = message.Attributes.ApproximateReceiveCount;
       const tzoffset = (new Date()).getTimezoneOffset() * 60000;
       const messageCreatedAt = new Date(message.Attributes.SentTimestamp - tzoffset).toISOString();
-      // console.log(messageBody);
+      // logger.log('info', messageBody);
 
       try {
-        const localISOTime = (new Date(Date.now() - tzoffset)).toISOString();
-        console.log(localISOTime, `Processing message ID: ${messageId}`);
-        console.log(localISOTime, `Message created: ${messageCreatedAt}`);
-        console.log(localISOTime, `Previous receive count: ${previousReceives}`);
+        logger.log('info', `Processing message ID: ${messageId}`);
+        logger.log('info', `Message created: ${messageCreatedAt}`);
+        logger.log('info', `Previous receive count: ${previousReceives}`);
         await createPublicAllegationsCase(messageBody);
         return resolve();
       } catch (err) {
-        const localISOTime = (new Date(Date.now() - tzoffset)).toISOString();
-        console.error(localISOTime, err.message);
-        console.error(localISOTime, err.body);
+        logger.log('error', `Message: ${err.message}`);
+        logger.log('error', `Body: ${err.body}`);
         return reject(err);
       }
     });
