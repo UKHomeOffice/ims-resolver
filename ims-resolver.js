@@ -48,6 +48,7 @@ const imsResolver = {
         await createPublicAllegationsCase(messageBody);
         return resolve();
       } catch (err) {
+        const localISOTime = (new Date(Date.now() - tzoffset)).toISOString();
         console.error(localISOTime, err.message);
         console.error(localISOTime, err.body);
         return reject(err);
