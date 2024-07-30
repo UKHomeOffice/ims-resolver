@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/UKHomeOffice/ims-resolver#readme",
   "dependencies": {
-    "@aws-sdk/client-sqs": "^3.441.0",
+    "@aws-sdk/client-sqs": "^3.529.0",
     "axios": "^1.6.7",
     "snyk": "^1.1290.0",
     "sqs-consumer": "^9.1.0",
