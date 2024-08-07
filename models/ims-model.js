@@ -58,11 +58,12 @@ const setEformValue = (eform, fieldName, fieldValue) => {
 
 const setEformValues = (eform, caseRef) => {
   const today = new Date();
-  const time = today.getHours() + ':' + today.getMinutes();
+  //add 0 in front of single digit minutes
+  const time = today.getHours() + ':' + (today.getMinutes() < 10 ? '0' : '') + today.getMinutes();
 
   setEformValue(eform, 'caseid', caseRef);
-  setEformValue(eform, 'dtborec', today.toLocaleDateString());
-  setEformValue(eform, 'tmboec', time);
+  setEformValue(eform, 'dtBORec', today.toLocaleDateString());
+  setEformValue(eform, 'tmBORec', time);
 };
 
 const createClient = async () =>
@@ -104,12 +105,10 @@ const addCaseForm = async (client, caseRef, eformDefinition, eformName) =>
 
 const writeFormData = async (client, caseRef, eform, msg) =>
   new Promise(function (resolve, reject) {
-    // console.log('eform: ', eform);
     eformData.FLEformFields.CaseEformInstance.EformName = eform;
     eformData.FLEformFields.EformData.EformFields = msg.EformFields;
     eformData.FLEformFields.CaseEformInstance.CaseReference = caseRef;
     setEformValues(eformData.FLEformFields.EformData, caseRef);
-    // console.log('eformData: ', eformData);
     client.writeCaseEformData(eformData,
       (err, result) => (err ? reject(err) : resolve(result))
     );
@@ -119,7 +118,6 @@ const clearFormData =  () => {
   eformData.FLEformFields.CaseEformInstance.EformName = null;
   eformData.FLEformFields.EformData.EformFields = null;
   eformData.FLEformFields.CaseEformInstance.CaseReference = null;
-  // console.log('eformData: ', eformData);
 };
 
 const addAdditionalPerson = async (client, caseRef, additionalPerson) =>
