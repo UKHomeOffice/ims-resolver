@@ -62,8 +62,8 @@ const setEformValues = (eform, caseRef) => {
   const time = today.getHours() + ':' + (today.getMinutes() < 10 ? '0' : '') + today.getMinutes();
 
   setEformValue(eform, 'caseid', caseRef);
-  setEformValue(eform, 'dtBORec', today.toLocaleDateString());
-  setEformValue(eform, 'tmBORec', time);
+  setEformValue(eform, 'dtborec', today.toLocaleDateString());
+  setEformValue(eform, 'tmborec', time);
   console.log('*********** eForm properties ', eform, '***************');
 };
 
