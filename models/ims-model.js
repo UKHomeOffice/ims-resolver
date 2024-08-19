@@ -62,8 +62,9 @@ const setEformValues = (eform, caseRef) => {
   const time = today.getHours() + ':' + (today.getMinutes() < 10 ? '0' : '') + today.getMinutes();
 
   setEformValue(eform, 'caseid', caseRef);
-  setEformValue(eform, 'dtborec', today.toLocaleDateString());
-  setEformValue(eform, 'tmborec', time);
+  // setEformValue(eform, 'dtBORec', today.toLocaleDateString());
+  setEformValue(eform, 'dtBORec', today.toLocaleDateString("en-GB"));
+  setEformValue(eform, 'tmBORec', time);
   console.log('*********** eForm properties ', eform, '***************');
 };
 
@@ -106,6 +107,7 @@ const addCaseForm = async (client, caseRef, eformDefinition, eformName) =>
 
 const writeFormData = async (client, caseRef, eform, msg) =>
   new Promise(function (resolve, reject) {
+    // console.log('eform: ', eform);
     eformData.FLEformFields.CaseEformInstance.EformName = eform;
     eformData.FLEformFields.EformData.EformFields = msg.EformFields;
     eformData.FLEformFields.CaseEformInstance.CaseReference = caseRef;
