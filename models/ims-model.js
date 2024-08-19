@@ -62,10 +62,8 @@ const setEformValues = (eform, caseRef) => {
   const time = today.getHours() + ':' + (today.getMinutes() < 10 ? '0' : '') + today.getMinutes();
 
   setEformValue(eform, 'caseid', caseRef);
-  // setEformValue(eform, 'dtBORec', today.toLocaleDateString());
   setEformValue(eform, 'dtBORec', today.toLocaleDateString("en-GB"));
   setEformValue(eform, 'tmBORec', time);
-  console.log('*********** eForm properties ', eform, '***************');
 };
 
 const createClient = async () =>
