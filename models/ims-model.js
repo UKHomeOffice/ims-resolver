@@ -145,8 +145,6 @@ const createDocument = async (attachment, fvToken) => {
     console.log('*************** FILE ', file);
     const base64File = Buffer.from(file).toString('base64');
     console.log('*************** BASE64 FILE ', base64File);
-    console.log('*********************addThumbnail result )non stringified: ', request);
-      console.log('*********************addThumbnail result: ' + JSON.stringify(request, null, 2));
     return {
       FWTDocument: {
         Document: base64File,
