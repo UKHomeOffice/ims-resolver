@@ -140,7 +140,7 @@ const addAdditionalPeople = async (client, caseRef, additionalPeople) => {
 
 const createDocument = async (attachment, fvToken) => {
   console.log('********** attachment', attachment);
-  console.log('**************** file url', image.url);
+  console.log('**************** file url', attachment.url);
   console.log('***************** fv token', fvToken);
   try {
     const file = await fv.getFile(attachment.url, fvToken);
