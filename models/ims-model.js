@@ -139,7 +139,9 @@ const addAdditionalPeople = async (client, caseRef, additionalPeople) => {
 };
 
 const createDocument = async (attachment, fvToken) => {
-  console.log('********attachment', attachment);
+  console.log('********** attachment', attachment);
+  console.log('**************** file url', image.url);
+  console.log('***************** fv token', fvToken);
   try {
     const file = await fv.getFile(attachment.url, fvToken);
     console.log('*************** FILE ', file);
@@ -226,6 +228,7 @@ module.exports = {
       const attachmentRefs = [];
       try {
         const fvToken = await fv.auth();
+        console.log('************** image coming from form ', msg.Attachments);
         for (const attachment of msg.Attachments) {
           const document = await createDocument(attachment, fvToken);
           result = await addDocument(client, document);
