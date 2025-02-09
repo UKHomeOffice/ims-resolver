@@ -72,6 +72,7 @@ const createClient = async () =>
       if (err) {return reject(err);}
       client.setEndpoint(config.ims.endpoint);
       client.setSecurity(new soap.BasicAuthSecurity(config.ims.apiUser, config.ims.apiPassword));
+      console.log('Client: ', client);
       return resolve(client);
     }
     )
@@ -208,14 +209,14 @@ module.exports = {
 
     for (let i = 0; i < eformDefinitions.length; i++) {
       result = await addCaseForm(client, caseRef, eformDefinitions[i], eforms[i]);
-      // console.log('addCaseForm ' + eformDefinitions[i] + ' result: ' + JSON.stringify(result, null, 2));
+      console.log('addCaseForm ' + eformDefinitions[i] + ' result: ' + JSON.stringify(result, null, 2));
 
       result = await writeFormData(client, caseRef, eforms[i], msg);
-      // console.log('writeFormData ' +  eforms[i] + ' result: ' + JSON.stringify(result, null, 2));
+      console.log('writeFormData ' +  eforms[i] + ' result: ' + JSON.stringify(result, null, 2));
     }
 
     result = await addAdditionalPeople(client, caseRef, msg.AdditionalPeople);
-    // console.log('addAdditionalPeople result: ' + JSON.stringify(result, null, 2));
+    console.log('addAdditionalPeople result: ' + JSON.stringify(result, null, 2));
 
     clearFormData();
 
@@ -226,12 +227,12 @@ module.exports = {
         for (const attachment of msg.Attachments) {
           const document = await createDocument(attachment, fvToken);
           result = await addDocument(client, document);
-          // console.log('addDocument result: ' + JSON.stringify(result, null, 2));
+          console.log('addDocument result: ' + JSON.stringify(result, null, 2));
           attachmentRefs.push({ name: attachment.name, identifier: result });
         }
         const note = createNote(attachmentRefs, caseRef);
         result = await addNote(client, note);
-        // console.log('createNotes result: ' + JSON.stringify(result, null, 2));
+        console.log('createNotes result: ' + JSON.stringify(result, null, 2));
       } catch (error) {
         throw error;
       }
