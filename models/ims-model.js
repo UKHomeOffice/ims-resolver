@@ -72,7 +72,6 @@ const createClient = async () =>
       if (err) {return reject(err);}
       client.setEndpoint(config.ims.endpoint);
       client.setSecurity(new soap.BasicAuthSecurity(config.ims.apiUser, config.ims.apiPassword));
-      console.log('Client: ', client);
       return resolve(client);
     }
     )
@@ -98,6 +97,7 @@ const addCaseForm = async (client, caseRef, eformDefinition, eformName) =>
     client.addCaseEform(eForm,
       (err, result) => {
         if (err) {return reject(err);}
+        console.log('Add Case Form ', result);
 
         return resolve(result);
       }
@@ -106,7 +106,6 @@ const addCaseForm = async (client, caseRef, eformDefinition, eformName) =>
 
 const writeFormData = async (client, caseRef, eform, msg) =>
   new Promise(function (resolve, reject) {
-    // console.log('eform: ', eform);
     eformData.FLEformFields.CaseEformInstance.EformName = eform;
     eformData.FLEformFields.EformData.EformFields = msg.EformFields;
     eformData.FLEformFields.CaseEformInstance.CaseReference = caseRef;
@@ -216,7 +215,7 @@ module.exports = {
     }
 
     result = await addAdditionalPeople(client, caseRef, msg.AdditionalPeople);
-    console.log('addAdditionalPeople result: ' + JSON.stringify(result, null, 2));
+    // console.log('addAdditionalPeople result: ' + JSON.stringify(result, null, 2));
 
     clearFormData();
 
