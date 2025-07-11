@@ -26,7 +26,7 @@
   "dependencies": {
     "@aws-sdk/client-sqs": "^3.441.0",
     "axios": "^1.6.7",
-    "snyk": "^1.1290.0",
+    "snyk": "^1.1297.3",
     "sqs-consumer": "^9.1.0",
     "strong-soap": "^3.4.1"
   },
