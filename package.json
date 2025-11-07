@@ -23,15 +23,15 @@
   },
   "homepage": "https://github.com/UKHomeOffice/ims-resolver#readme",
   "dependencies": {
-    "@aws-sdk/client-sqs": "^3.441.0",
+    "@aws-sdk/client-sqs": "^3.926.0",
     "axios": "^1.6.7",
-    "sqs-consumer": "^9.1.0",
-    "strong-soap": "^3.4.1"
+    "sqs-consumer": "^14.1.0",
+    "strong-soap": "^5.0.3"
   },
   "devDependencies": {
     "dotenv": "^16.0.3",
-    "eslint": "^8.52.0",
-    "eslint-config-hof": "^1.3.1",
+    "eslint": "^9.39.1",
+    "eslint-config-hof": "^1.3.4",
     "nodemon": "^2.0.20"
   }
 }
