@@ -1,3 +1,10 @@
 node_modules/
 .env
 .DS_Store
+public
+.idea
+coverage
+output/
+.nyc_output
+.vscode
+.vscode-server
