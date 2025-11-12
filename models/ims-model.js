@@ -140,8 +140,12 @@ const addAdditionalPeople = async (client, caseRef, additionalPeople) => {
 
 const createDocument = async (attachment, fvToken) => {
   try {
+    console.time()
     const file = await fv.getFile(attachment.url, fvToken);
+    console.timeEnd()
+    console.log('***************File retrieved for attachment: ', file);
     const base64File = Buffer.from(file).toString('base64');
+    console.log('***************File converted to base64', base64File);
     return {
       FWTDocument: {
         Document: base64File,
