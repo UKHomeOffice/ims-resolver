@@ -40,7 +40,7 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-sqs@^3.876.0", "@aws-sdk/client-sqs@^3.926.0":
+"@aws-sdk/client-sqs@^3.901.0", "@aws-sdk/client-sqs@^3.926.0":
   version "3.933.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/client-sqs/-/client-sqs-3.933.0.tgz#39f1594b08b5c9eb9f9b1f5b5c9457c3fed00e85"
   integrity sha512-A7QRdF+iWpNTHFexf5Umk8H4yZbYpBjS22u+uaJlUuiqc8VuGhfZp6d+/P6rO7wO0SXpMTHbj2itUJButEzzpg==
@@ -1724,7 +1724,7 @@ debug@^3.2.7:
   dependencies:
     ms "^2.1.1"
 
-debug@^4.1.0, debug@^4.2.0, debug@^4.3.1, debug@^4.3.2, debug@^4.3.4, debug@^4.4.1, debug@^4.4.3:
+debug@^4.1.0, debug@^4.2.0, debug@^4.3.1, debug@^4.3.2, debug@^4.3.4, debug@^4.4.3:
   version "4.4.3"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.4.3.tgz#c6ae432d9bd9662582fce08709b038c58e9e3d6a"
   integrity sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==
@@ -3630,13 +3630,13 @@ sprintf-js@~1.0.2:
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
   integrity sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==
 
-sqs-consumer@^13.0.0:
-  version "13.0.0"
-  resolved "https://registry.yarnpkg.com/sqs-consumer/-/sqs-consumer-13.0.0.tgz#2433ebb240d2110b529dd8fed20fe44f38702294"
-  integrity sha512-9wr6rXJym9MSw6s5b83tlul/HxqECgroinR2ZhVGAm3jv+OPzEhQtKwyVkSy8VO+wCYB87A8HDAmP9ZUNHsdLw==
+sqs-consumer@^14.0.0:
+  version "14.1.0"
+  resolved "https://registry.yarnpkg.com/sqs-consumer/-/sqs-consumer-14.1.0.tgz#8876a266a9d1645f9292533f733d16c187b52f7d"
+  integrity sha512-VxSR7vSXO7uYemIAikpoRkz3yOR7i1IsFBI1256d5JJHtwsztUCwj6jm0ovGU/FMiUw4Dixo6xm5/7Bzgw/XtA==
   dependencies:
-    "@aws-sdk/client-sqs" "^3.876.0"
-    debug "^4.4.1"
+    "@aws-sdk/client-sqs" "^3.901.0"
+    debug "^4.4.3"
 
 sshpk@^1.18.0:
   version "1.18.0"
