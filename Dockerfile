@@ -1,8 +1,8 @@
-FROM node:lts-alpine@sha256:b78c9500958805b52214e8bd588defe55ec32116dfdc094e3ca652a3502d67df
+FROM quay.io/ukhomeofficedigital/hof-nodejs:20.19.0-alpine3.21-v2@sha256:ab9686c7cf77bab94ab32c1c0e262b2a5242c2cbff61b0bbb3f62610b4f2e706
 
 USER root
 
-# Update packages as a result of Anchore security vulnerability checks
+# Update packages as a result of security vulnerability checks
 RUN apk update && \
     apk add --upgrade gnutls binutils nodejs npm apk-tools libjpeg-turbo libcurl libx11 libxml2 curl
 
