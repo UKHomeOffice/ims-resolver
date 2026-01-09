@@ -3558,10 +3558,10 @@ strong-globalize@^6.0.6:
     os-locale "^5.0.0"
     yamljs "^0.3.0"
 
-strong-soap@^5.0.3:
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/strong-soap/-/strong-soap-5.0.4.tgz#cbf12f50ebef8b8d590ec090792f59c9eb96df03"
-  integrity sha512-oOvN1HpsLcsoYpy/QInxs/ITThehTrt6LCpVKytovy4wMEsUHNrG5zP1APsrfIMVvd/p6Dt7SRdOHhcGTUCImA==
+strong-soap@^5.0.5:
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/strong-soap/-/strong-soap-5.0.5.tgz#994235e20b7aaaca25c4d890dd584c0a3bd5ba58"
+  integrity sha512-n5P7CH5R3OQERpT+d38dyDysHwHxkatGuuZw2/4pbbtyH+Gs8ECSFrgMiaFBs4jh9jwDshInHujCE60TfdW3zA==
   dependencies:
     "@cypress/request" "^3.0.9"
     compress "^0.99.0"
