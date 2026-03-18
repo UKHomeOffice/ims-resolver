@@ -2,7 +2,7 @@ const { Consumer } = require('sqs-consumer');
 const { createPublicAllegationsCase } = require('./models/ims-model');
 const config = require('./config');
 const { SQSClient } = require('@aws-sdk/client-sqs');
-/* eslint-disable consistent-return, no-console */
+/* eslint-disable no-console */
 
 const imsResolver = {
   start: function () {
@@ -32,21 +32,17 @@ const imsResolver = {
   },
 
   handleMessage: async message => {
-    return new Promise(async (resolve, reject) => {
-      const messageBody = JSON.parse(message.Body);
-      // console.log(messageBody);
+    const messageBody = JSON.parse(message.Body);
 
-      try {
-        await createPublicAllegationsCase(messageBody);
-        return resolve();
-      } catch (err) {
-        const tzoffset = (new Date()).getTimezoneOffset() * 60000;
-        const localISOTime = (new Date(Date.now() - tzoffset)).toISOString();
-        console.error(localISOTime, err.message);
-        console.error(localISOTime, err.body);
-        return reject(err);
-      }
-    });
+    try {
+      await createPublicAllegationsCase(messageBody);
+    } catch (err) {
+      const tzoffset = (new Date()).getTimezoneOffset() * 60000;
+      const localISOTime = (new Date(Date.now() - tzoffset)).toISOString();
+      console.error(localISOTime, err.message);
+      console.error(localISOTime, err.body);
+      throw err;
+    }
   }
 };
 

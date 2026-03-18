@@ -1,5 +1,5 @@
 'use strict';
-/* eslint-disable consistent-return, no-console */
+/* eslint-disable no-console */
 const soap = require('strong-soap').soap;
 const config = require('../config');
 const fv = require('../lib/file-vault-utils');
@@ -150,7 +150,7 @@ const createDocument = async (attachment, fvToken) => {
       }
     };
   } catch (error) {
-    throw error;
+    throw new Error(`Failed to retrieve document '${attachment.name}' from file vault: ${error.message}`);
   }
 };
 

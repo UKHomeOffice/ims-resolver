@@ -2,6 +2,29 @@
 
 This ims resolver consumes from the AWS SQS (Simple Queue Service) and posts from the queue to the ims system
 
+## Prerequisites
+
+- Node.js >=24.14.0 <25.0.0
+- AWS SQS queue configured
+- IMS SOAP API endpoint
+- Keycloak authentication (for file vault access)
+
+## Running
+
+```bash
+# Production
+yarn start
+
+# Development (with dotenv)
+yarn run start:dev
+
+# Tests
+yarn test
+
+# Linting
+yarn run test:lint
+```
+
 ## Git Tags and Release Workflow
 
 This repository uses Git tags to trigger the release pipeline, build container images, and push them to the Quay.io container registry.
