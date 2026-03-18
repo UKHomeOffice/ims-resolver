@@ -1,5 +1,4 @@
 jest.mock('axios');
-const axios = require('axios');
 
 describe('auth', () => {
   it('should throw if tokenUrl is not defined', async () => {
