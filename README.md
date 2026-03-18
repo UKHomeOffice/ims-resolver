@@ -2,11 +2,25 @@
 
 This ims resolver consumes from the AWS SQS (Simple Queue Service) and posts from the queue to the ims system
 
+A Node.js microservice that consumes messages from the AWS SQS (Simple Queue Service) and posts from the queue to the IMS system via a SOAP.
+
+## How It Works
+
+1. Listens for messages on a configured SQS queue
+2. Parses each message and creates a case in IMS, including:
+   - Creating the case record
+   - Adding and populating eforms (read-only and editable)
+   - Adding additional people associated with the case
+   - Retrieving file attachments from a secure file vault (authenticated via Keycloak) and uploading them to IMS as documents
+   - Creating notes linking the uploaded documents to the case
+3. Successfully processed messages are automatically removed from the queue
+4. Failed messages remain in the queue for retry
+
 ## Prerequisites
 
 - Node.js >=24.14.0 <25.0.0
 - AWS SQS queue configured
-- IMS SOAP API endpoint
+- IMS API endpoint (SOAP)
 - Keycloak authentication (for file vault access)
 
 ## Running
