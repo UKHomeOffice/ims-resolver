@@ -2,7 +2,7 @@ const { Consumer } = require('sqs-consumer');
 const { createPublicAllegationsCase } = require('./models/ims-model');
 const config = require('./config');
 const { SQSClient } = require('@aws-sdk/client-sqs');
-/* eslint-disable no-console */
+const logger = require('./lib/logger');
 
 const imsResolver = {
   start: function () {
@@ -20,15 +20,15 @@ const imsResolver = {
     });
 
     consumer.on('error', err => {
-      console.error(err.message);
+      logger.error({ err }, 'Consumer error');
     });
 
     consumer.on('processing_error', err => {
-      console.error(err.message);
+      logger.error({ err }, 'Processing error');
     });
 
     consumer.start();
-    console.log(`Resolver is listening for messages from: ${config.aws.sqs.queueUrl}`);
+    logger.info(`Resolver is listening for messages from: ${config.aws.sqs.queueUrl}`);
   },
 
   handleMessage: async message => {
@@ -38,10 +38,7 @@ const imsResolver = {
       await createPublicAllegationsCase(messageBody);
       return message;
     } catch (err) {
-      const tzoffset = (new Date()).getTimezoneOffset() * 60000;
-      const localISOTime = (new Date(Date.now() - tzoffset)).toISOString();
-      console.error(localISOTime, err.message);
-      console.error(localISOTime, err.body);
+      logger.error({ err }, 'Failed to process message');
       throw err;
     }
   }

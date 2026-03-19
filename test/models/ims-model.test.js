@@ -137,7 +137,7 @@ describe('createPublicAllegationsCase', () => {
     };
 
     await expect(createPublicAllegationsCase(msg)).rejects.toThrow(
-      "Failed to retrieve document 'doc1.pdf' from file vault: file vault error"
+      "Failed to retrieve document 'do***c1.pdf' from file vault: file vault error"
     );
   });
 });
