@@ -36,6 +36,7 @@ const imsResolver = {
 
     try {
       await createPublicAllegationsCase(messageBody);
+      return message;
     } catch (err) {
       const tzoffset = (new Date()).getTimezoneOffset() * 60000;
       const localISOTime = (new Date(Date.now() - tzoffset)).toISOString();
