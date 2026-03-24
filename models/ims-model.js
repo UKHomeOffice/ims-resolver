@@ -1,9 +1,11 @@
 'use strict';
-/* eslint-disable no-console */
 const soap = require('strong-soap').soap;
 const config = require('../config');
 const fv = require('../lib/file-vault-utils');
+const logger = require('../lib/logger');
 const wsdlUrl = config.ims.wsdl;
+
+const maskFilename = name => name.replace(/^(.{2}).*(.{2}\..+)$/, '$1***$2');
 
 const auth = `Basic:${Buffer.from(`${config.ims.apiUser}:${config.ims.apiPassword}`).toString('base64')}`;
 
@@ -31,7 +33,7 @@ const eformData = {
   FLEformFields: {
     CaseEformInstance: {
       CaseReference: null,
-      EformName: config.ims.eformName
+      EformName: null
     },
     EformData: {
       EformFields: null
@@ -82,7 +84,7 @@ const createCase = async client =>
     client.createCase(caseType,
       (err, result) => {
         if (err) {return reject(err);}
-        console.log('Case reference: ' + JSON.stringify(result, null, 2));
+        logger.info({ caseReference: result }, 'Case created');
         return resolve(result);
       }
     )
@@ -105,7 +107,6 @@ const addCaseForm = async (client, caseRef, eformDefinition, eformName) =>
 
 const writeFormData = async (client, caseRef, eform, msg) =>
   new Promise(function (resolve, reject) {
-    // console.log('eform: ', eform);
     eformData.FLEformFields.CaseEformInstance.EformName = eform;
     eformData.FLEformFields.EformData.EformFields = msg.EformFields;
     eformData.FLEformFields.CaseEformInstance.CaseReference = caseRef;
@@ -134,7 +135,7 @@ const addAdditionalPerson = async (client, caseRef, additionalPerson) =>
 const addAdditionalPeople = async (client, caseRef, additionalPeople) => {
   for (let i = 0; i < additionalPeople.length; i++) {
     const result = await addAdditionalPerson(client, caseRef, additionalPeople[i]);
-    console.log('addAdditionalPerson result: ' + JSON.stringify(result, null, 2));
+    logger.info({ result }, 'Additional person added');
   }
 };
 
@@ -150,7 +151,7 @@ const createDocument = async (attachment, fvToken) => {
       }
     };
   } catch (error) {
-    throw new Error(`Failed to retrieve document '${attachment.name}' from file vault: ${error.message}`);
+    throw new Error(`Failed to retrieve document '${maskFilename(attachment.name)}' from file vault: ${error.message}`);
   }
 };
 
@@ -197,9 +198,9 @@ const addNote = (client, note) =>
 
 module.exports = {
   createPublicAllegationsCase: async msg => {
-    let result = 0;
 
     const client = await createClient();
+    logger.debug('SOAP client created');
 
     const caseRef = await createCase(client);
 
@@ -207,34 +208,27 @@ module.exports = {
     const eforms = config.ims.eforms.split(', ');
 
     for (let i = 0; i < eformDefinitions.length; i++) {
-      result = await addCaseForm(client, caseRef, eformDefinitions[i], eforms[i]);
-      // console.log('addCaseForm ' + eformDefinitions[i] + ' result: ' + JSON.stringify(result, null, 2));
-
-      result = await writeFormData(client, caseRef, eforms[i], msg);
-      // console.log('writeFormData ' +  eforms[i] + ' result: ' + JSON.stringify(result, null, 2));
+      await addCaseForm(client, caseRef, eformDefinitions[i], eforms[i]);
+      await writeFormData(client, caseRef, eforms[i], msg);
     }
 
-    result = await addAdditionalPeople(client, caseRef, msg.AdditionalPeople);
-    // console.log('addAdditionalPeople result: ' + JSON.stringify(result, null, 2));
+    await addAdditionalPeople(client, caseRef, msg.AdditionalPeople);
 
     clearFormData();
 
     if (msg.Attachments.length) {
+      logger.debug({ count: msg.Attachments.length }, 'Processing attachments');
       const attachmentRefs = [];
-      try {
-        const fvToken = await fv.auth();
-        for (const attachment of msg.Attachments) {
-          const document = await createDocument(attachment, fvToken);
-          result = await addDocument(client, document);
-          // console.log('addDocument result: ' + JSON.stringify(result, null, 2));
-          attachmentRefs.push({ name: attachment.name, identifier: result });
-        }
-        const note = createNote(attachmentRefs, caseRef);
-        result = await addNote(client, note);
-        // console.log('createNotes result: ' + JSON.stringify(result, null, 2));
-      } catch (error) {
-        throw error;
+
+      const fvToken = await fv.auth();
+      for (const attachment of msg.Attachments) {
+        const document = await createDocument(attachment, fvToken);
+        const documentIdentifier = await addDocument(client, document);
+        logger.debug({ documentIdentifier: documentIdentifier }, 'Document created');
+        attachmentRefs.push({ name: attachment.name, identifier: documentIdentifier });
       }
+      const note = createNote(attachmentRefs, caseRef);
+      await addNote(client, note);
     }
   }
 };

@@ -26,7 +26,8 @@
     "@aws-sdk/client-sqs": "^3.1012.0",
     "axios": "^1.13.6",
     "sqs-consumer": "^14.2.3",
-    "strong-soap": "^5.0.8"
+    "strong-soap": "^5.0.8",
+    "pino": "^9.6.0"
   },
   "devDependencies": {
     "dotenv": "^17.3.1",
