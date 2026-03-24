@@ -198,7 +198,6 @@ const addNote = (client, note) =>
 
 module.exports = {
   createPublicAllegationsCase: async msg => {
-    let result = 0;
 
     const client = await createClient();
     logger.debug('SOAP client created');
@@ -209,11 +208,11 @@ module.exports = {
     const eforms = config.ims.eforms.split(', ');
 
     for (let i = 0; i < eformDefinitions.length; i++) {
-      result = await addCaseForm(client, caseRef, eformDefinitions[i], eforms[i]);
-      result = await writeFormData(client, caseRef, eforms[i], msg);
+      await addCaseForm(client, caseRef, eformDefinitions[i], eforms[i]);
+      await writeFormData(client, caseRef, eforms[i], msg);
     }
 
-    result = await addAdditionalPeople(client, caseRef, msg.AdditionalPeople);
+    await addAdditionalPeople(client, caseRef, msg.AdditionalPeople);
 
     clearFormData();
 
@@ -224,11 +223,12 @@ module.exports = {
       const fvToken = await fv.auth();
       for (const attachment of msg.Attachments) {
         const document = await createDocument(attachment, fvToken);
-        result = await addDocument(client, document);
-        attachmentRefs.push({ name: attachment.name, identifier: result });
+        const documentIdentifier = await addDocument(client, document);
+        logger.debug({ documentIdentifier: documentIdentifier }, 'Document created');
+        attachmentRefs.push({ name: attachment.name, identifier: documentIdentifier });
       }
       const note = createNote(attachmentRefs, caseRef);
-      result = await addNote(client, note);
+      await addNote(client, note);
     }
   }
 };
