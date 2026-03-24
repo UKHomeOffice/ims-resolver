@@ -198,7 +198,6 @@ const addNote = (client, note) =>
 
 module.exports = {
   createPublicAllegationsCase: async msg => {
-
     const client = await createClient();
     logger.debug('SOAP client created');
 
