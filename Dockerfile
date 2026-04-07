@@ -2,12 +2,12 @@ FROM node:24.14.1-alpine3.23@sha256:5bc53106902596d90fb497746b74ea40e0625c1c8327
 
 USER root
 
-# Update packages as a result of security vulnerability checks
+# Update Alpine system packages to patch known vulnerabilities
 RUN apk update && \
     apk upgrade --no-cache
 
-# Update npm to fix vulnerabilities in bundled node packages
-RUN npm install -g npm@latest
+# Update all globally installed npm packages to fix vulnerabilities
+RUN npm update -g
 
 # Setup nodejs group & nodejs user
 RUN addgroup --system nodejs --gid 998 && \
