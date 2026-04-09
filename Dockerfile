@@ -1,10 +1,13 @@
-FROM quay.io/ukhomeofficedigital/hof-nodejs:20.19.0-alpine3.21-v2@sha256:ab9686c7cf77bab94ab32c1c0e262b2a5242c2cbff61b0bbb3f62610b4f2e706
+FROM node:24.14.1-alpine3.23@sha256:5bc53106902596d90fb497746b74ea40e0625c1c8327681d6bff3ee6ad42a22b
 
 USER root
 
-# Update packages as a result of security vulnerability checks
+# Update Alpine system packages to patch known vulnerabilities
 RUN apk update && \
-    apk add --upgrade gnutls binutils nodejs npm apk-tools libjpeg-turbo libcurl libx11 libxml2 curl
+    apk upgrade --no-cache
+
+# Update all globally installed npm packages to fix vulnerabilities
+RUN npm update -g
 
 # Setup nodejs group & nodejs user
 RUN addgroup --system nodejs --gid 998 && \
