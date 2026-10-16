@@ -4222,7 +4222,7 @@ lodash.merge@^4.6.2:
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
-lodash@^4.17.15, lodash@^4.17.20, lodash@^4.17.23, lodash@^4.18.1:
+lodash@^4.17.15, lodash@^4.17.20, lodash@^4.18.1:
   version "4.18.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.18.1.tgz#ff2b66c1f6326d59513de2407bf881439812771c"
   integrity sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==
@@ -4898,10 +4898,10 @@ safer-buffer@^2.0.2, safer-buffer@^2.1.0, safer-buffer@~2.1.0:
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
-sax@^1.5.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/sax/-/sax-1.6.0.tgz#da59637629307b97e7c4cb28e080a7bc38560d5b"
-  integrity sha512-6R3J5M4AcbtLUdZmRv2SygeVaM7IhrLXu9BmnOGmmACak8fiUtOsYNWUS4uK7upbmHIBbLBeFeI//477BKLBzA==
+sax@^1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/sax/-/sax-1.6.1.tgz#4c23cf608c0b693ab54b4b5888e92cfe977b9843"
+  integrity sha512-42tBVwLWnaQvW5zc4HbZrTuWccECCZfBi92FDuwtqxasH+JbPB3/FOKb1m222K42R4WxuxzzMsTswfzgtSu64Q==
 
 selectn@^1.3.0:
   version "1.3.0"
@@ -5222,21 +5222,21 @@ strong-globalize@^6.0.6:
     os-locale "^5.0.0"
     yamljs "^0.3.0"
 
-strong-soap@^5.0.8:
-  version "5.0.8"
-  resolved "https://registry.yarnpkg.com/strong-soap/-/strong-soap-5.0.8.tgz#dbbe662241ead7d66554512fcb2dac096a3a2ed5"
-  integrity sha512-v7SopKbRtFoCyRt3C2SF+c67IrVtktWX/YL5aVNoaNBZmjYeXwjqqhn6KlRxMf0SDwFnWPI0DRlNlupGUBU5RQ==
+strong-soap@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/strong-soap/-/strong-soap-6.0.3.tgz#26acb4b6d0aa35ca5fac16cc2869963834cd15fc"
+  integrity sha512-IRQegzqmrINVyy45X/+XI06c9WSsC6RM4/HnrKLMmGhM+L0B/nU+a/wpxl+GWs4S9NPuUnURp+ajhGHS+k9d6Q==
   dependencies:
     "@cypress/request" "^3.0.10"
     compress "^0.99.0"
     debug "^4.4.3"
     httpntlm "^1.8.13"
-    lodash "^4.17.23"
+    lodash "^4.18.1"
     node-rsa "^1.1.1"
-    sax "^1.5.0"
+    sax "^1.6.1"
     selectn "^1.3.0"
     strong-globalize "^6.0.6"
-    uuid "^13.0.0"
+    uuid "^11.1.1"
     xml-crypto "^3.2.1"
     xmlbuilder "^10.1.1"
 
@@ -5503,10 +5503,10 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
-uuid@^13.0.0:
-  version "13.0.0"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-13.0.0.tgz#263dc341b19b4d755eb8fe36b78d95a6b65707e8"
-  integrity sha512-XQegIaBTVUjSHliKqcnFqYypAd4S+WCYt5NIeRs6w/UAry7z8Y9j5ZwRRL4kzq9U3sD6v+85er9FvkEaBpji2w==
+uuid@^11.1.1:
+  version "11.1.1"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-11.1.1.tgz#f6d81d2e1c65d00762e5e29b16c5d2d995e208ad"
+  integrity sha512-vIYxrBCC/N/K+Js3qSN88go7kIfNPssr/hHCesKCQNAjmgvYS2oqr69kIufEG+O4+PfezOH4EbIeHCfFov8ZgQ==
 
 uuid@^8.3.2:
   version "8.3.2"
