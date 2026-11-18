@@ -14,6 +14,15 @@ module.exports = {
     eforms: 'allegationsTablet, allegationsHorizon',
     endpoint: process.env.IMS_ENDPOINT
   },
+  verint: {
+    wsdl: process.env.VERINT_WSDL,
+    endpoint: process.env.VERINT_ENDPOINT,
+    apiUser: process.env.VERINT_API_USER,
+    apiPassword: process.env.VERINT_API_PASSWORD,
+    formName: process.env.VERINT_FORM_NAME,
+    attachmentField: process.env.VERINT_ATTACHMENT_FIELD
+  },
+  sendToVerint: process.env.SEND_TO_VERINT === 'true',
   aws: {
     sqs: {
       region: process.env.AWS_REGION || 'eu-west-2',

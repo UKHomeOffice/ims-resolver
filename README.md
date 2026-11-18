@@ -1,20 +1,23 @@
 # ims-resolver
 
-This ims resolver consumes from the AWS SQS (Simple Queue Service) and posts from the queue to the ims system
+This IMS resolver consumes messages from AWS SQS (Simple Queue Service) and submits them to IMS using SOAP. The integration is selected with `SEND_TO_VERINT`: when set to `true`, the resolver uses Verint Cloud; otherwise, it uses the existing EBSA-hosted integration.
 
-A Node.js microservice that consumes messages from the AWS SQS (Simple Queue Service) and posts from the queue to the IMS system via a SOAP.
+A Node.js microservice that consumes messages from AWS SQS (Simple Queue Service) and posts them to the selected IMS integration via SOAP.
 
 ## How It Works
 
 1. Listens for messages on a configured SQS queue
-2. Parses each message and creates a case in IMS, including:
-   - Creating the case record
-   - Adding and populating eforms (read-only and editable)
-   - Adding additional people associated with the case
-   - Retrieving file attachments from a secure file vault (authenticated via Keycloak) and uploading them to IMS as documents
-   - Creating notes linking the uploaded documents to the case
+2. Parses each message and submits it to the configured integration
 3. Successfully processed messages are automatically removed from the queue
 4. Failed messages remain in the queue for retry
+
+### EBSA-hosted integration
+
+The existing EBSA-hosted integration creates a case, adds and populates read-only and editable eforms, handles additional people, and uploads file-vault attachments as IMS documents with case-linked notes.
+
+### Verint Cloud integration
+
+The Verint Cloud integration creates one populated form from the message's `EformFields`, adds receipt date and time fields, and attaches any File Vault documents to the form.
 
 ## Prerequisites
 

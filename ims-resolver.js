@@ -1,8 +1,13 @@
 const { Consumer } = require('sqs-consumer');
-const { createPublicAllegationsCase } = require('./models/ims-model');
+const imsModel = require('./models/ims-model');
+const verintModel = require('./models/verint-model');
 const config = require('./config');
 const { SQSClient } = require('@aws-sdk/client-sqs');
 const logger = require('./lib/logger');
+
+const createPublicAllegationsCase = config.sendToVerint ?
+  verintModel.createPublicAllegationsCase
+  : imsModel.createPublicAllegationsCase;
 
 const imsResolver = {
   start: function () {
