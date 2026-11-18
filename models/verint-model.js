@@ -29,13 +29,13 @@ const createForm = async (client, request) =>
   );
 
 // Updates an existing form
-const updateForm = async (client, request) =>
-  new Promise((resolve, reject) =>
-    client.Update(request, (err, result) => {
-      if (err) { return reject(err); }
-      return resolve(result);
-    })
-  );
+// const updateForm = async (client, request) =>
+//   new Promise((resolve, reject) =>
+//     client.Update(request, (err, result) => {
+//       if (err) { return reject(err); }
+//       return resolve(result);
+//     })
+//   );
 
 // Attaches a file to a form
 const attachFile = async (client, request) =>

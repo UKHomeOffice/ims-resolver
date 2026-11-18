@@ -12,7 +12,7 @@ module.exports = {
     queue: 'Allegations Kainos',
     eformDefinitions: 'Allegations READ ONLY, Allegations EDITABLE',
     eforms: 'allegationsTablet, allegationsHorizon',
-    endpoint: process.env.IMS_ENDPOINT,
+    endpoint: process.env.IMS_ENDPOINT
   },
   verint: {
     wsdl: process.env.VERINT_WSDL,
